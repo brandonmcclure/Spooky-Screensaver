@@ -6,15 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SpiderScreensaver")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A creepy crawly spider screensaver... for Halloween or your enemies.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("
-
-               ")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SpiderScreensaver")]
-[assembly: AssemblyCopyright("Copyright © 
-
-                2018")]
+[assembly: AssemblyCopyright("Copyright © Brandon McClure 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
