@@ -27,7 +27,7 @@ namespace SpiderScreensaver
             height = 250;
             locationX = 0;
             locationY = 0;
-            direction = 0;
+            direction = 3;
             MovementSpeed = 30;
         }
     }

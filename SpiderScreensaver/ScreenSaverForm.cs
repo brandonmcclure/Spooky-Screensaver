@@ -123,25 +123,25 @@ namespace SpiderScreensaver
                     else if(spr.direction == 1)
                     {
                         spr._pictureBox.Left += spr.MovementSpeed;
-                        if (!Bounds.Contains(new System.Drawing.Point(spr._pictureBox.Left, spr._pictureBox.Top)))
+                        if (Bounds.Right < spr._pictureBox.Left)
                         {
-                            spr._pictureBox.Left = Bounds.Left + spr._pictureBox.Width;
+                            spr._pictureBox.Left = Bounds.Left - spr._pictureBox.Width;
                         }
                     }
-                    //Move down
+                    //Move up
                     else if(spr.direction == 2)
                     {
                         spr._pictureBox.Top -= spr.MovementSpeed;
-                        if (!Bounds.Contains(new System.Drawing.Point(spr._pictureBox.Left, spr._pictureBox.Top)))
+                        if (Bounds.Top > spr._pictureBox.Bottom)
                         {
-                            spr._pictureBox.Top = Bounds.Top + spr._pictureBox.Height;
+                            spr._pictureBox.Top = Bounds.Bottom;
                         }
                     }
                     //Move Left
                     else if(spr.direction == 3)
                     {
                         spr._pictureBox.Left -= spr.MovementSpeed;
-                        if (!Bounds.Contains(new System.Drawing.Point(spr._pictureBox.Right,spr._pictureBox.Top)))
+                        if (Bounds.Left > spr._pictureBox.Right)
                         {
                             spr._pictureBox.Left = Bounds.Right;
                         }
