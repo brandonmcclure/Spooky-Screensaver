@@ -42,6 +42,7 @@ namespace SpiderScreensaver
         private bool previewMode = false;
         private Random rand = new Random();
         private List<Sprite> spriteCollection = new List<Sprite>();
+        private string movementType;
 
         public ScreenSaverForm()
         {
@@ -93,7 +94,7 @@ namespace SpiderScreensaver
             Cursor.Hide();            
             TopMost = true;
 
-            moveTimer.Interval = 1000;
+            moveTimer.Interval = 100;
             moveTimer.Tick += new EventHandler(moveTimer_Tick);
             moveTimer.Start();
         }
@@ -102,14 +103,60 @@ namespace SpiderScreensaver
         {
             foreach (Sprite spr in spriteCollection)
             {
-                // Move text to new location
-                spr._pictureBox.Left = rand.Next(Math.Max(1, Bounds.Width - spr._pictureBox.Width));
-                spr._pictureBox.Top = rand.Next(Math.Max(1, Bounds.Height - spr._pictureBox.Height));
+                if (movementType == "Random") { 
+                    spr._pictureBox.Left = rand.Next(Math.Max(1, Bounds.Width - spr._pictureBox.Width));
+                    spr._pictureBox.Top = rand.Next(Math.Max(1, Bounds.Height - spr._pictureBox.Height));
+                }
+
+                else if (movementType == "Crawl")
+                {
+                    //Move down
+                    if (spr.direction == 0)
+                    {
+                        spr._pictureBox.Top += spr.MovementSpeed;
+                        if (Bounds.Bottom <= spr._pictureBox.Top)
+                        {
+                            spr._pictureBox.Top = Bounds.Top - spr._pictureBox.Height;
+                        }
+                    }
+                    //Move right
+                    else if(spr.direction == 1)
+                    {
+                        spr._pictureBox.Left += spr.MovementSpeed;
+                        if (!Bounds.Contains(new System.Drawing.Point(spr._pictureBox.Left, spr._pictureBox.Top)))
+                        {
+                            spr._pictureBox.Left = Bounds.Left + spr._pictureBox.Width;
+                        }
+                    }
+                    //Move down
+                    else if(spr.direction == 2)
+                    {
+                        spr._pictureBox.Top -= spr.MovementSpeed;
+                        if (!Bounds.Contains(new System.Drawing.Point(spr._pictureBox.Left, spr._pictureBox.Top)))
+                        {
+                            spr._pictureBox.Top = Bounds.Top + spr._pictureBox.Height;
+                        }
+                    }
+                    //Move Left
+                    else if(spr.direction == 3)
+                    {
+                        spr._pictureBox.Left -= spr.MovementSpeed;
+                        if (!Bounds.Contains(new System.Drawing.Point(spr._pictureBox.Right,spr._pictureBox.Top)))
+                        {
+                            spr._pictureBox.Left = Bounds.Right;
+                        }
+                    }
+                }
             }
         }
 
         private void LoadSettings()
         {
+            RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\SpiderScreensaver");
+            if (key == null)
+                movementType = "Crawl";
+            else
+                movementType = (string)key.GetValue("movementType");
         }
 
         private void ScreenSaverForm_MouseMove(object sender, MouseEventArgs e)

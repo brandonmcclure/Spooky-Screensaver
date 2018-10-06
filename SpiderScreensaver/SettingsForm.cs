@@ -32,11 +32,11 @@ namespace SpiderScreensaver
         /// </summary>
         private void LoadSettings()
         {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Demo_ScreenSaver");
+            RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\SpiderScreensaver");
             if (key == null)
-                textBox.Text = "C# Screen Saver";
+                textBox.Text = "Random";
             else
-                textBox.Text = (string)key.GetValue("text");
+                textBox.Text = (string)key.GetValue("movementType");
         }
 
         /// <summary>
@@ -45,9 +45,9 @@ namespace SpiderScreensaver
         private void SaveSettings()
         {
             // Create or get existing subkey
-            RegistryKey key = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Demo_ScreenSaver");
+            RegistryKey key = Registry.CurrentUser.CreateSubKey("SOFTWARE\\SpiderScreensaver");
 
-            key.SetValue("text", textBox.Text);
+            key.SetValue("movementType", textBox.Text);
         }
 
         private void okButton_Click(object sender, EventArgs e)

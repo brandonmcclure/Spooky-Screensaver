@@ -15,7 +15,8 @@ namespace SpiderScreensaver
         int locationX;
         int locationY;
 
-        int direction;
+        public int direction;
+        public int MovementSpeed;
         private Random rand = new Random();
 
         public System.Windows.Forms.PictureBox _pictureBox;
@@ -27,6 +28,7 @@ namespace SpiderScreensaver
             locationX = 0;
             locationY = 0;
             direction = 0;
+            MovementSpeed = 30;
         }
     }
 }
