@@ -41,17 +41,28 @@ namespace SpiderScreensaver
         private Point mouseLocation;
         private bool previewMode = false;
         private Random rand = new Random();
+        private List<Sprite> spriteCollection = new List<Sprite>();
 
         public ScreenSaverForm()
         {
             InitializeComponent();
-            this.BackColor = Color.LimeGreen;
-            //this.TransparencyKey = Color.LimeGreen;
+            
         }
 
         public ScreenSaverForm(Rectangle Bounds)
         {
             InitializeComponent();
+            this.BackColor = Color.LimeGreen;
+            
+            System.Windows.Forms.PictureBox _pictureBox = pictureBox1;
+            _pictureBox.Image = SpiderScreensaver.Properties.Resources.sprites;
+            pictureBox1.Size = new Size(250, 250);
+            pictureBox1.BackColor = Color.LimeGreen;
+            pictureBox1.Visible = true;
+            pictureBox1.Refresh();
+            Sprite mySprite = new Sprite(pictureBox1);
+            spriteCollection.Add(mySprite);
+            //this.TransparencyKey = Color.LimeGreen;
             this.Bounds = Bounds;
         }
 
@@ -71,8 +82,6 @@ namespace SpiderScreensaver
             Size = ParentRect.Size;
             Location = new Point(0, 0);
 
-            // Make text smaller
-            textLabel.Font = new System.Drawing.Font("Arial", 6);
 
             previewMode = true;
         }
@@ -91,19 +100,16 @@ namespace SpiderScreensaver
 
         private void moveTimer_Tick(object sender, System.EventArgs e)
         {
-            // Move text to new location
-            textLabel.Left = rand.Next(Math.Max(1, Bounds.Width - textLabel.Width));
-            textLabel.Top = rand.Next(Math.Max(1, Bounds.Height - textLabel.Height));            
+            foreach (Sprite spr in spriteCollection)
+            {
+                // Move text to new location
+                spr._pictureBox.Left = rand.Next(Math.Max(1, Bounds.Width - spr._pictureBox.Width));
+                spr._pictureBox.Top = rand.Next(Math.Max(1, Bounds.Height - spr._pictureBox.Height));
+            }
         }
 
         private void LoadSettings()
         {
-            // Use the string from the Registry if it exists
-            RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Demo_ScreenSaver");
-            if (key == null)
-                textLabel.Text = "C# Screen Saver";
-            else
-                textLabel.Text = (string)key.GetValue("text");
         }
 
         private void ScreenSaverForm_MouseMove(object sender, MouseEventArgs e)

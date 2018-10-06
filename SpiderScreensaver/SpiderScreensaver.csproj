@@ -60,6 +60,7 @@
     <Compile Include="SettingsForm.designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Sprite.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -68,6 +69,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="ScreenSaverForm.resx">
       <DependentUpon>ScreenSaverForm.cs</DependentUpon>
@@ -87,6 +89,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\animated-spider-game-character-action-260nw-783589831.jpg" />
+    <None Include="Resources\Image1.bmp" />
+    <Content Include="Resources\orange-spider 300x250.png" />
+    <Content Include="Resources\orange-spider.png" />
+    <None Include="Resources\spiderSpriteSheet.png" />
+    <EmbeddedResource Include="Resources\sprites.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
