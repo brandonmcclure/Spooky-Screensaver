@@ -41,7 +41,7 @@ namespace SpiderScreensaver
         private Point mouseLocation;
         private bool previewMode = false;
         private Random rand = new Random();
-        private List<Sprite> spriteCollection = new List<Sprite>();
+        private List<Sprite_wf> Sprite_wfCollection = new List<Sprite_wf>();
         private string movementType;
 
         public ScreenSaverForm()
@@ -61,8 +61,8 @@ namespace SpiderScreensaver
             pictureBox1.BackColor = Color.LimeGreen;
             pictureBox1.Visible = true;
             pictureBox1.Refresh();
-            Sprite mySprite = new Sprite(pictureBox1);
-            spriteCollection.Add(mySprite);
+            Sprite_wf mySprite_wf = new Sprite_wf(pictureBox1, SpiderScreensaver.Properties.Resources.sprites);
+            Sprite_wfCollection.Add(mySprite_wf);
             //this.TransparencyKey = Color.LimeGreen;
             this.Bounds = Bounds;
         }
@@ -101,7 +101,7 @@ namespace SpiderScreensaver
 
         private void moveTimer_Tick(object sender, System.EventArgs e)
         {
-            foreach (Sprite spr in spriteCollection)
+            foreach (Sprite_wf spr in Sprite_wfCollection)
             {
                 if (movementType == "Random") { 
                     spr._pictureBox.Left = rand.Next(Math.Max(1, Bounds.Width - spr._pictureBox.Width));
