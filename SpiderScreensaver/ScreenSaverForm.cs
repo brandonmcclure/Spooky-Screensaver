@@ -41,7 +41,7 @@ namespace SpiderScreensaver
         private Point mouseLocation;
         private bool previewMode = false;
         private Random rand = new Random();
-        private List<Sprite> spriteCollection = new List<Sprite>();
+        private List<Sprite_wf> Sprite_wfCollection = new List<Sprite_wf>();
         private string movementType;
 
         public ScreenSaverForm()
@@ -61,8 +61,8 @@ namespace SpiderScreensaver
             pictureBox1.BackColor = Color.LimeGreen;
             pictureBox1.Visible = true;
             pictureBox1.Refresh();
-            Sprite mySprite = new Sprite(pictureBox1);
-            spriteCollection.Add(mySprite);
+            Sprite_wf mySprite_wf = new Sprite_wf(pictureBox1, SpiderScreensaver.Properties.Resources.sprites,Bounds);
+            Sprite_wfCollection.Add(mySprite_wf);
             //this.TransparencyKey = Color.LimeGreen;
             this.Bounds = Bounds;
         }
@@ -101,8 +101,12 @@ namespace SpiderScreensaver
 
         private void moveTimer_Tick(object sender, System.EventArgs e)
         {
-            foreach (Sprite spr in spriteCollection)
+            foreach (Sprite_wf spr in Sprite_wfCollection)
             {
+                if (rand.Next(1,100) < 20)
+                {
+                    spr.ChangeDirection(rand.Next(0, 3));
+                }
                 if (movementType == "Random") { 
                     spr._pictureBox.Left = rand.Next(Math.Max(1, Bounds.Width - spr._pictureBox.Width));
                     spr._pictureBox.Top = rand.Next(Math.Max(1, Bounds.Height - spr._pictureBox.Height));
@@ -110,42 +114,7 @@ namespace SpiderScreensaver
 
                 else if (movementType == "Crawl")
                 {
-                    //Move down
-                    if (spr.direction == 0)
-                    {
-                        spr._pictureBox.Top += spr.MovementSpeed;
-                        if (Bounds.Bottom <= spr._pictureBox.Top)
-                        {
-                            spr._pictureBox.Top = Bounds.Top - spr._pictureBox.Height;
-                        }
-                    }
-                    //Move right
-                    else if(spr.direction == 1)
-                    {
-                        spr._pictureBox.Left += spr.MovementSpeed;
-                        if (Bounds.Right < spr._pictureBox.Left)
-                        {
-                            spr._pictureBox.Left = Bounds.Left - spr._pictureBox.Width;
-                        }
-                    }
-                    //Move up
-                    else if(spr.direction == 2)
-                    {
-                        spr._pictureBox.Top -= spr.MovementSpeed;
-                        if (Bounds.Top > spr._pictureBox.Bottom)
-                        {
-                            spr._pictureBox.Top = Bounds.Bottom;
-                        }
-                    }
-                    //Move Left
-                    else if(spr.direction == 3)
-                    {
-                        spr._pictureBox.Left -= spr.MovementSpeed;
-                        if (Bounds.Left > spr._pictureBox.Right)
-                        {
-                            spr._pictureBox.Left = Bounds.Right;
-                        }
-                    }
+                    spr.MoveSprite();
                 }
             }
         }
@@ -187,5 +156,6 @@ namespace SpiderScreensaver
             if (!previewMode)
                 Application.Exit();
         }
+
     }
 }
