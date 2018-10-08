@@ -21,6 +21,7 @@ namespace SpiderScreensaver
         public int MovementSpeed;
         public Random rand = new Random();
         public Image tilesheet;
+        public Rectangle playingBounds;
 
         public abstract void AnimateSprite();
         public abstract void ChangeDirection(int newDirection);
@@ -29,7 +30,7 @@ namespace SpiderScreensaver
     {
 
         public System.Windows.Forms.PictureBox _pictureBox;
-        public Sprite_wf(System.Windows.Forms.PictureBox pictureBox, Image sourceTileset)
+        public Sprite_wf(System.Windows.Forms.PictureBox pictureBox, Image sourceTileset, Rectangle _playingBounds)
         {
             tilesheet = sourceTileset;
             _pictureBox = pictureBox;
@@ -39,6 +40,8 @@ namespace SpiderScreensaver
             locationX = 0;
             locationY = 0;
             getCurrentRectangleFromTileSheet();
+
+            playingBounds = _playingBounds;
 
 
             direction = 1;
@@ -76,6 +79,46 @@ namespace SpiderScreensaver
                 imageStartY = height * newDirection;
                 getCurrentRectangleFromTileSheet();
                 int x = 0;
+            }
+        }
+
+        internal void MoveSprite()
+        {
+            //Move down
+            if (direction == 0)
+            {
+                _pictureBox.Top += MovementSpeed;
+                if (playingBounds.Bottom <= _pictureBox.Top)
+                {
+                    _pictureBox.Top = playingBounds.Top - _pictureBox.Height;
+                }
+            }
+            //Move right
+            else if (direction == 1)
+            {
+                _pictureBox.Left += MovementSpeed;
+                if (playingBounds.Right < _pictureBox.Left)
+                {
+                    _pictureBox.Left = playingBounds.Left - _pictureBox.Width;
+                }
+            }
+            //Move up
+            else if (direction == 2)
+            {
+                _pictureBox.Top -= MovementSpeed;
+                if (playingBounds.Top > _pictureBox.Bottom)
+                {
+                    _pictureBox.Top = playingBounds.Bottom;
+                }
+            }
+            //Move Left
+            else if (direction == 3)
+            {
+                _pictureBox.Left -= MovementSpeed;
+                if (playingBounds.Left > _pictureBox.Right)
+                {
+                    _pictureBox.Left = playingBounds.Right;
+                }
             }
         }
     }
