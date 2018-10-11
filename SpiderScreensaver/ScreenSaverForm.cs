@@ -75,7 +75,7 @@ namespace SpiderScreensaver
             SetParent(this.Handle, PreviewWndHandle);
 
             // Make this a child window so it will close when the parent dialog closes
-            SetWindowLong(this.Handle, -16, new IntPtr(GetWindowLong(this.Handle, -16) | 0x40000000));
+            var rsl = SetWindowLong(this.Handle, -16, new IntPtr(GetWindowLong(this.Handle, -16) | 0x40000000));
 
             // Place our window inside the parent
             Rectangle ParentRect;
@@ -103,19 +103,8 @@ namespace SpiderScreensaver
         {
             foreach (Sprite_wf spr in Sprite_wfCollection)
             {
-                if (rand.Next(1,100) < 20)
-                {
-                    spr.ChangeDirection(rand.Next(0, 3));
-                }
-                if (movementType == "Random") { 
-                    spr._pictureBox.Left = rand.Next(Math.Max(1, Bounds.Width - spr._pictureBox.Width));
-                    spr._pictureBox.Top = rand.Next(Math.Max(1, Bounds.Height - spr._pictureBox.Height));
-                }
-
-                else if (movementType == "Crawl")
-                {
-                    spr.MoveSprite();
-                }
+                spr.tick();
+                
             }
         }
 
