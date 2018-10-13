@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Binder;
 
 namespace SpiderScreensaver
 {
@@ -16,7 +19,13 @@ namespace SpiderScreensaver
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            IConfiguration Configuration;
+           var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
+            Configuration = builder.Build();
+            SpiderConfig _mySectionConfig = Configuration.GetSection("Spiders").Get<SpiderConfig>();
             if (args.Length > 0)
             {
                 string firstArgument = args[0].ToLower().Trim();
@@ -34,7 +43,7 @@ namespace SpiderScreensaver
 
                 if (firstArgument == "/c")           // Configuration mode
                 {
-                    Application.Run(new SettingsForm());
+                    Application.Run(new SettingsForm(Configuration));
                 }
                 else if (firstArgument == "/p")      // Preview mode
                 {
@@ -46,11 +55,15 @@ namespace SpiderScreensaver
                     }
 
                     IntPtr previewWndHandle = new IntPtr(long.Parse(secondArgument));
-                    Application.Run(new ScreenSaverForm(previewWndHandle));
+                    Application.Run(new ScreenSaverForm(previewWndHandle, Configuration));
                 }
                 else if (firstArgument == "/s")      // Full-screen mode
                 {
-                    ShowScreenSaver();
+                    foreach (Screen screen in Screen.AllScreens)
+                    {
+                        ScreenSaverForm screensaver = new ScreenSaverForm(screen.Bounds, Configuration);
+                        screensaver.Show();
+                    }
                     Application.Run();
                 }
                 else    // Undefined argument
@@ -62,19 +75,7 @@ namespace SpiderScreensaver
             }
             else    // No arguments - treat like /c
             {
-                Application.Run(new SettingsForm());
-            }
-        }
-
-        /// <summary>
-        /// Display the form on each of the computer's monitors.
-        /// </summary>
-        static void ShowScreenSaver()
-        {
-            foreach (Screen screen in Screen.AllScreens)
-            {
-                ScreenSaverForm screensaver = new ScreenSaverForm(screen.Bounds);
-                screensaver.Show();
+                Application.Run(new SettingsForm(Configuration));
             }
         }
     }

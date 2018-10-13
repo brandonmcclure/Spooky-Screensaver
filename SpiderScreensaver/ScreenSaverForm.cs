@@ -16,9 +16,11 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
+using Microsoft.Extensions.Configuration;
 
 namespace SpiderScreensaver
 {
+
     public partial class ScreenSaverForm : Form
     {
         #region Win32 API functions
@@ -37,7 +39,7 @@ namespace SpiderScreensaver
 
         #endregion
 
-
+        public static IConfiguration _Configuration { get; private set; }
         private Point mouseLocation;
         private bool previewMode = false;
         private Random rand = new Random();
@@ -50,11 +52,11 @@ namespace SpiderScreensaver
             
         }
 
-        public ScreenSaverForm(Rectangle Bounds)
+        public ScreenSaverForm(Rectangle Bounds, IConfiguration Configuration)
         {
             InitializeComponent();
             this.BackColor = Color.LimeGreen;
-            
+            _Configuration = Configuration;
             System.Windows.Forms.PictureBox _pictureBox = pictureBox1;
             _pictureBox.Image = SpiderScreensaver.Properties.Resources.sprites;
             pictureBox1.Size = new Size(250, 250);
@@ -67,9 +69,10 @@ namespace SpiderScreensaver
             this.Bounds = Bounds;
         }
 
-        public ScreenSaverForm(IntPtr PreviewWndHandle)
+        public ScreenSaverForm(IntPtr PreviewWndHandle, IConfiguration Configuration)
         {
             InitializeComponent();
+            _Configuration = Configuration;
 
             // Set the preview window as the parent of this window
             SetParent(this.Handle, PreviewWndHandle);
