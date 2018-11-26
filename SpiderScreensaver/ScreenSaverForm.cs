@@ -16,6 +16,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
+using Microsoft.Extensions.Configuration;
 
 namespace SpiderScreensaver
 {
@@ -41,8 +42,10 @@ namespace SpiderScreensaver
         private Point mouseLocation;
         private bool previewMode = false;
         private Random rand = new Random();
-        private List<Sprite_wf> Sprite_wfCollection = new List<Sprite_wf>();
-        private string movementType;
+        IConfiguration _configuration;
+
+
+
 
         public ScreenSaverForm()
         {
@@ -50,8 +53,9 @@ namespace SpiderScreensaver
             
         }
 
-        public ScreenSaverForm(Rectangle Bounds)
+        public ScreenSaverForm(Rectangle Bounds, IConfiguration configuration)
         {
+            _configuration = configuration;
             InitializeComponent();
             this.BackColor = Color.LimeGreen;
             
@@ -61,8 +65,7 @@ namespace SpiderScreensaver
             pictureBox1.BackColor = Color.LimeGreen;
             pictureBox1.Visible = true;
             pictureBox1.Refresh();
-            Sprite_wf mySprite_wf = new Sprite_wf(pictureBox1, SpiderScreensaver.Properties.Resources.sprites,Bounds);
-            Sprite_wfCollection.Add(mySprite_wf);
+            
             //this.TransparencyKey = Color.LimeGreen;
             this.Bounds = Bounds;
         }
@@ -88,33 +91,34 @@ namespace SpiderScreensaver
         }
 
         private void ScreenSaverForm_Load(object sender, EventArgs e)
-        {            
+        {
             LoadSettings();
 
-            Cursor.Hide();            
+            Cursor.Hide();
             TopMost = true;
 
             moveTimer.Interval = 100;
-            moveTimer.Tick += new EventHandler(moveTimer_Tick);
-            moveTimer.Start();
-        }
-
-        private void moveTimer_Tick(object sender, System.EventArgs e)
-        {
-            foreach (Sprite_wf spr in Sprite_wfCollection)
-            {
-                spr.tick();
-                
+            if (_configuration["ActiveMode"] == "HalloweenMode") { 
+                iMode myMode = new HalloweenMode(pictureBox1, this.Bounds, _configuration);
+                moveTimer.Tick += new EventHandler(myMode.moveTimer_Tick);
             }
+            else if(_configuration["ActiveMode"] == "WinterMode")
+            {
+                iMode myMode = new WinterMode(pictureBox1, this.Bounds, _configuration);
+                moveTimer.Tick += new EventHandler(myMode.moveTimer_Tick);
+            }
+            else
+            {
+                throw new Exception("I do not know what mode to run in.");
+            }
+            
+            moveTimer.Start();
         }
 
         private void LoadSettings()
         {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\SpiderScreensaver");
-            if (key == null)
-                movementType = "Crawl";
-            else
-                movementType = (string)key.GetValue("movementType");
+
+            
         }
 
         private void ScreenSaverForm_MouseMove(object sender, MouseEventArgs e)

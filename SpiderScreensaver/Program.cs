@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,9 @@ namespace SpiderScreensaver
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", optional: true)
+    .Build();
             if (args.Length > 0)
             {
                 string firstArgument = args[0].ToLower().Trim();
@@ -50,7 +53,7 @@ namespace SpiderScreensaver
                 }
                 else if (firstArgument == "/s")      // Full-screen mode
                 {
-                    ShowScreenSaver();
+                    ShowScreenSaver(configuration);
                     Application.Run();
                 }
                 else    // Undefined argument
@@ -69,11 +72,11 @@ namespace SpiderScreensaver
         /// <summary>
         /// Display the form on each of the computer's monitors.
         /// </summary>
-        static void ShowScreenSaver()
+        static void ShowScreenSaver(IConfiguration configuration)
         {
             foreach (Screen screen in Screen.AllScreens)
             {
-                ScreenSaverForm screensaver = new ScreenSaverForm(screen.Bounds);
+                ScreenSaverForm screensaver = new ScreenSaverForm(screen.Bounds, configuration );
                 screensaver.Show();
             }
         }
