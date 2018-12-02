@@ -67,7 +67,7 @@ namespace MyScreensaver_wpf
 					else
 					{
 
-                    MainWindow window = new MainWindow();
+                    MainWindow window = new MainWindow(configuration);
                     window.Left = s.WorkingArea.Left;
                     window.Top = s.WorkingArea.Top;
                     window.Width = s.WorkingArea.Width;

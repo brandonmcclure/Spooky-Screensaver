@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpiderScreensaver
+namespace MyScreensaver_wpf
 {
     abstract class iSprite : IDisposable
     {

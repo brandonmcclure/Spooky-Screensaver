@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpiderScreensaver
+namespace MyScreensaver_wpf
 {
     interface iMode
     {
@@ -17,15 +17,14 @@ namespace SpiderScreensaver
     class WinterMode : iMode
     {
         public IConfiguration _configuration { get; set; }
-        Sprite_wf mySprite_wf;
         private List<Sprite_wf> Sprite_wfCollection = new List<Sprite_wf>();
 
-        public WinterMode(System.Windows.Forms.PictureBox pictureBox, Rectangle Bounds, IConfiguration configuration)
+        public WinterMode(Rectangle Bounds, IConfiguration configuration)
         {
             _configuration = configuration;
-            mySprite_wf = new Sprite_wf(pictureBox, SpiderScreensaver.Properties.Resources.SnowSprite, Bounds, 98, 98 );
-            mySprite_wf.movementType = "Fall";
-            Sprite_wfCollection.Add(mySprite_wf);
+            //mySprite_wf = new Sprite_wf(pictureBox, SpiderScreensaver.Properties.Resources.SnowSprite, Bounds, 98, 98 );
+            //mySprite_wf.movementType = "Fall";
+            //Sprite_wfCollection.Add(mySprite_wf);
             Configure();
         }
         public void moveTimer_Tick(object sender, EventArgs e)
@@ -52,7 +51,7 @@ namespace SpiderScreensaver
         public HalloweenMode(System.Windows.Forms.PictureBox pictureBox, Rectangle Bounds, IConfiguration configuration)
         {
             _configuration = configuration;
-            mySprite_wf = new Sprite_wf(pictureBox, SpiderScreensaver.Properties.Resources.sprites, Bounds,250,250);
+            //mySprite_wf = new Sprite_wf(pictureBox, SpiderScreensaver.Properties.Resources.sprites, Bounds,250,250);
             Sprite_wfCollection.Add(mySprite_wf);
             Configure();
         }

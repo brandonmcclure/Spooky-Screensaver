@@ -102,6 +102,7 @@
     <Compile Include="Blackout.xaml.cs">
       <DependentUpon>Blackout.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Configuration.cs" />
     <Compile Include="InteropDefs.cs" />
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>

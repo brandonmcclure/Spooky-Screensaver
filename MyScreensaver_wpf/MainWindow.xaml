@@ -13,7 +13,19 @@
         WindowStyle="None"
         Height="800" Width="800">
     <Grid x:Name="MainGrid">
-        <Image x:Name="logo"
-               Source="Resources\SnowSprite.png" Width="200" Height="200" />
+        <Rectangle Width="95" Height="95" Margin="472,360,233,345" x:Name="Snowflake01">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="Resources\SnowSprite.png"
+                           
+                Stretch="None"
+                AlignmentX="Left"
+                AlignmentY="Top">
+                    <ImageBrush.Transform>
+                        <TranslateTransform x:Name="SpriteSheetOffset" X="0" Y="0" />
+                    </ImageBrush.Transform>
+                </ImageBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Label x:Name="DebugText" Content="Label" HorizontalAlignment="Left" Margin="89,56,0,0" VerticalAlignment="Top" Width="518" FontFamily="Showcard Gothic" Background="#FFFDFDFD" Height="107"/>
     </Grid>
 </Window>
