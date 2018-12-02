@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderScreensaver", "SpiderScreensaver\SpiderScreensaver.csproj", "{5FAD8987-6C83-48B7-9613-069DC97E46CA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyScreensaver_wpf", "MyScreensaver_wpf\MyScreensaver_wpf.csproj", "{47718777-17EA-4FDD-B5DB-C8FCCBB67822}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{5FAD8987-6C83-48B7-9613-069DC97E46CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FAD8987-6C83-48B7-9613-069DC97E46CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FAD8987-6C83-48B7-9613-069DC97E46CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47718777-17EA-4FDD-B5DB-C8FCCBB67822}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47718777-17EA-4FDD-B5DB-C8FCCBB67822}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47718777-17EA-4FDD-B5DB-C8FCCBB67822}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47718777-17EA-4FDD-B5DB-C8FCCBB67822}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
