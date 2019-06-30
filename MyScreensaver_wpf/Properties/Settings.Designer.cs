@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SpiderScreensaver.Properties
+namespace MyScreensaver_wpf.Properties
 {
 
 
