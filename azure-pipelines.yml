@@ -86,6 +86,7 @@ steps:
    }
    copy-item "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\Release\MyScreensaver_wpf.exe" "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\Release\MyScreensaver_wpf.scr"
    
+   Write-Output 0
    # Use the environment variables input below to pass secret variables to this script.
   displayName: 'copy exe into .scr file'
 
