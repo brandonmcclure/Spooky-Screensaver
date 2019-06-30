@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyScreensaver_wpf
 {
-    abstract class iSprite : IDisposable
+    public abstract class iSprite : IDisposable
     {
         public int width;
         public int height;
@@ -25,6 +25,7 @@ namespace MyScreensaver_wpf
 
         public abstract void AnimateSprite();
         public abstract void ChangeDirection(int newDirection);
+        public abstract void tick();
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
@@ -61,7 +62,7 @@ namespace MyScreensaver_wpf
         }
         #endregion
     }
-    class Sprite_wf : iSprite
+    public class Sprite_wf : iSprite
     {
         private bool disposedValue = false; // To detect redundant calls
         public System.Windows.Forms.PictureBox _pictureBox;
@@ -124,7 +125,7 @@ namespace MyScreensaver_wpf
             }
         }
 
-        internal void tick()
+        public override void tick()
         {
             
                 MoveSprite();

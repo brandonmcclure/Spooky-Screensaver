@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,9 +32,11 @@ namespace MyScreensaver_wpf
         private int currentFrame;
         private TimeSpan timeTillNextFrame;
         private System.Windows.Threading.DispatcherTimer dispatcherTimer;
+        private System.Drawing.Rectangle windowBounds;
 
         public MainWindow()
         {
+            
             InitializeComponent();
             this.Loaded += MainWindow_Loaded;
         }
@@ -49,6 +52,13 @@ namespace MyScreensaver_wpf
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
             WindowState = WindowState.Maximized;
+
+            windowBounds = new System.Drawing.Rectangle() { X = 0, Y = 0, Height = (int)this.MainGrid.ActualHeight, Width = (int)this.MainGrid.ActualWidth };
+            if (windowBounds.Height == 0 || windowBounds.Width == 0)
+            {
+                throw new IncorrectConfigurationException("Could not get the window bounds");
+            }
+
             DebugText.Visibility = System.Windows.Visibility.Hidden;
             if (_configuration["Debug"] == "1")
             {
@@ -65,13 +75,11 @@ namespace MyScreensaver_wpf
             }
             else if (_configuration["ActiveMode"] == "WinterMode")
             {
-                IMode myMode = new WinterMode(new System.Drawing.Rectangle() { X = 0, Y=0, Height = (int)this.MainGrid.ActualHeight, Width = (int)this.MainGrid.ActualWidth }, _configuration);
+                IMode myMode = new WinterMode(windowBounds, _configuration);
+
                 dispatcherTimer.Tick += new EventHandler(myMode.moveTimer_Tick);
             }
-                return;
 
-// RectAnimationExample();
-            //rotateAnimationExample();
             WindowState = WindowState.Maximized;
             // Mouse.OverrideCursor = Cursors.None;
         }
@@ -159,7 +167,7 @@ namespace MyScreensaver_wpf
                 "MyAnimatedRectangleGeometry", myRectangleGeometry);
 
             Path myPath = new Path();
-            myPath.Fill = Brushes.AliceBlue;
+            myPath.Fill = System.Windows.Media.Brushes.AliceBlue;
             var fullBitmap = new BitmapImage(new Uri(@"pack://application:,,,/Resources/SnowSprite.png"));
             Int32Rect croppRect = new Int32Rect(0, 0, 95, 95);
             var croppedBitmap = new CroppedBitmap(fullBitmap, croppRect);
@@ -171,7 +179,7 @@ namespace MyScreensaver_wpf
             mybrush.Stretch = Stretch.Fill;
             myPath.Fill = mybrush;
             myPath.StrokeThickness = 1;
-            myPath.Stroke = Brushes.Black;
+            myPath.Stroke = System.Windows.Media.Brushes.Black;
             myPath.Data = myRectangleGeometry;
 
             RectAnimation myRectAnimation = new RectAnimation();

@@ -14,6 +14,20 @@ namespace MyScreensaver_wpf
         void moveTimer_Tick(object sender, EventArgs e);
     }
 
+    public class AMode : IMode
+    {
+        public IConfiguration _configuration { get; set; }
+        public List<iSprite> Sprite_wfCollection = new List<iSprite>();
+
+        public virtual void moveTimer_Tick(object sender, EventArgs e)
+        {
+            foreach (Sprite_wf spr in Sprite_wfCollection)
+            {
+                spr.tick();
+            }
+        }
+    }
+
     class WinterMode : IMode
     {
         public IConfiguration _configuration { get; set; }
