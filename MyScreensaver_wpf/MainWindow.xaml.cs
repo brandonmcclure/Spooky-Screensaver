@@ -31,6 +31,8 @@ namespace MyScreensaver_wpf
         private int currentFrame;
         private TimeSpan timeTillNextFrame;
         private System.Windows.Threading.DispatcherTimer dispatcherTimer;
+        private SpriteLibrary _spriteLibrary = new SpriteLibrary();
+        
 
         public MainWindow()
         {
@@ -65,15 +67,19 @@ namespace MyScreensaver_wpf
             }
             else if (_configuration["ActiveMode"] == "WinterMode")
             {
-                //iMode myMode = new WinterMode(pictureBox1, this.Bounds, _configuration);
-                //dispatcherTimer.Tick += new EventHandler(myMode.moveTimer_Tick);
+                int numberOfSprites;
+                 if(!Int32.TryParse(_configuration["WinterMode\\NumberOFSnowflakes"], out numberOfSprites))
+                {
+                    numberOfSprites = 5;
+                }
+                _spriteLibrary.GenerateSprites(SpriteType.Snowflake, numberOfSprites);
             }
             else
             {
                 throw new Exception("I do not know what mode to run in.");
             }
-
-            RectAnimationExample();
+            
+            //RectAnimationExample();
             rotateAnimationExample();
             WindowState = WindowState.Maximized;
             // Mouse.OverrideCursor = Cursors.None;
@@ -110,7 +116,7 @@ namespace MyScreensaver_wpf
 
             Snowflake01.RenderTransform = transformGroup;
             myRotateTransform.BeginAnimation(RotateTransform.AngleProperty, da);
-            
+
         }
 
         private void OnUpdate(object sender, object e)
