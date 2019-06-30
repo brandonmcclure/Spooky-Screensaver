@@ -20,7 +20,7 @@ pool:
 variables:
   configuration: debug
   system.debug: true
-  BuildPlatform:"any cpu"
+  BuildPlatform:any cpu
   BuildConfiguration:release
 
 #Your build pipeline references an undefined variable named ‘Parameters.solution’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
