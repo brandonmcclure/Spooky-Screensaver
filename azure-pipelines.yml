@@ -80,12 +80,13 @@ steps:
    Write-Host " We are: at $(Get-Location)"
    Write-Host "env:SYSTEM_ARTIFACTSDIRECTORY = $env:SYSTEM_ARTIFACTSDIRECTORY"
    
-   if ($(system.debug)){}
+   if ($(system.debug)){
     Write-Host "env:AGENT_RELEASEDIRECTORY = $env:AGENT_RELEASEDIRECTORY"
     ls "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\Release\"
    }
    copy-item "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\Release\MyScreensaver_wpf.exe" "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\Release\MyScreensaver_wpf.scr"
    
+   return 0
    # Use the environment variables input below to pass secret variables to this script.
   displayName: 'copy exe into .scr file'
 
