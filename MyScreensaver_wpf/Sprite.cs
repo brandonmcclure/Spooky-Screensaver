@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpiderScreensaver
+namespace MyScreensaver_wpf
 {
     abstract class iSprite : IDisposable
     {
@@ -65,15 +65,15 @@ namespace SpiderScreensaver
     {
         private bool disposedValue = false; // To detect redundant calls
         public System.Windows.Forms.PictureBox _pictureBox;
-        public string movementType { get; protected set; } = "Crawl";
+        public string movementType { get; set; } = "Crawl";
 
-        public Sprite_wf(System.Windows.Forms.PictureBox pictureBox, Image sourceTileset, Rectangle _playingBounds)
+        public Sprite_wf(System.Windows.Forms.PictureBox pictureBox, Image sourceTileset, Rectangle _playingBounds,int tilex, int tiley)
         {
             tilesheet = sourceTileset;
             _pictureBox = pictureBox;
 
-            width = 250;
-            height = 250;
+            width = tilex;
+            height = tiley;
             locationX = 0;
             locationY = 0;
             getCurrentRectangleFromTileSheet();
@@ -190,6 +190,14 @@ namespace SpiderScreensaver
                     {
                         _pictureBox.Left = playingBounds.Right;
                     }
+                }
+            }
+            else if (movementType == "Fall")
+            {
+                _pictureBox.Top += MovementSpeed;
+                if (playingBounds.Bottom <= _pictureBox.Top)
+                {
+                    _pictureBox.Top = playingBounds.Top - _pictureBox.Height;
                 }
             }
         }
