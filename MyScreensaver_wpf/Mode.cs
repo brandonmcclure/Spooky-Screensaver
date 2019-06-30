@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace MyScreensaver_wpf
 {
-    interface iMode
+    interface IMode
     {
         IConfiguration _configuration { get; set; }
         void moveTimer_Tick(object sender, EventArgs e);
     }
 
-    class WinterMode : iMode
+    class WinterMode : IMode
     {
         public IConfiguration _configuration { get; set; }
-        private List<Sprite_wf> Sprite_wfCollection = new List<Sprite_wf>();
+       readonly  private List<Sprite_wf> Sprite_wfCollection = new List<Sprite_wf>();
 
         public WinterMode(Rectangle Bounds, IConfiguration configuration)
         {
@@ -38,12 +38,15 @@ namespace MyScreensaver_wpf
         }
         public void Configure()
         {
+            /*
+             * If I need to do any configuration I would "override" this method
+             */
+
         }
     }
 
-    class HalloweenMode : iMode
+    class HalloweenMode : IMode
     {
-        Sprite_wf mySprite_wf;
         private List<Sprite_wf> Sprite_wfCollection = new List<Sprite_wf>();
         private string movementType;
         public IConfiguration _configuration { get; set; }
@@ -51,8 +54,6 @@ namespace MyScreensaver_wpf
         public HalloweenMode(System.Windows.Forms.PictureBox pictureBox, Rectangle Bounds, IConfiguration configuration)
         {
             _configuration = configuration;
-            //mySprite_wf = new Sprite_wf(pictureBox, SpiderScreensaver.Properties.Resources.sprites, Bounds,250,250);
-            Sprite_wfCollection.Add(mySprite_wf);
             Configure();
         }
         public void Configure()

@@ -82,7 +82,6 @@ namespace MyScreensaver_wpf
 				Int32 previewHandle = Convert.ToInt32(e.Args[1]);
 				IntPtr pPreviewHnd = new IntPtr(previewHandle);
                 WaveSim.Rect lpRect = new WaveSim.Rect();
-				bool bGetRect = Win32Api.GetClientRect(pPreviewHnd, ref lpRect);
 
 				HwndSourceParameters sourceParams = new HwndSourceParameters("sourceParams");
 
@@ -97,8 +96,6 @@ namespace MyScreensaver_wpf
 				winWPFContent.Disposed += (o, args) => window.Close();
 				winWPFContent.RootVisual = window.MainGrid;
 
-			} else if (e.Args[0].ToLower().StartsWith("/c"))
-			{
 			}
 		}
 	}

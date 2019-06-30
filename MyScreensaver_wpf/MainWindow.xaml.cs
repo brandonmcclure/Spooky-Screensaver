@@ -60,21 +60,18 @@ namespace MyScreensaver_wpf
 
             if (_configuration["ActiveMode"] == "HalloweenMode")
             {
-                //iMode myMode = new HalloweenMode(this.MainGrid. this.Bounds, _configuration);
+                //IMode myMode = new HalloweenMode(this.MainGrid. this.Bounds, _configuration);
                 //dispatcherTimer.Tick += new EventHandler(myMode.moveTimer_Tick);
             }
             else if (_configuration["ActiveMode"] == "WinterMode")
             {
-                //iMode myMode = new WinterMode(pictureBox1, this.Bounds, _configuration);
-                //dispatcherTimer.Tick += new EventHandler(myMode.moveTimer_Tick);
+                IMode myMode = new WinterMode(new System.Drawing.Rectangle() { X = 0, Y=0, Height = (int)this.MainGrid.ActualHeight, Width = (int)this.MainGrid.ActualWidth }, _configuration);
+                dispatcherTimer.Tick += new EventHandler(myMode.moveTimer_Tick);
             }
-            else
-            {
-                throw new Exception("I do not know what mode to run in.");
-            }
+                return;
 
-            RectAnimationExample();
-            rotateAnimationExample();
+// RectAnimationExample();
+            //rotateAnimationExample();
             WindowState = WindowState.Maximized;
             // Mouse.OverrideCursor = Cursors.None;
         }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyScreensaver_wpf
 {
-    public class screenSaverConfig : IConfigurationSection
+    public class ScreenSaverConfig : IConfigurationSection
     {
         string IConfiguration.this[string key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
