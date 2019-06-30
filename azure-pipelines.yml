@@ -80,7 +80,7 @@ steps:
    Write-Host " We are: at $(Get-Location)"
    Write-Host "env:SYSTEM_ARTIFACTSDIRECTORY = $env:SYSTEM_ARTIFACTSDIRECTORY"
    
-   if ($(system.debug)){}
+   if ($(system.debug)){
     Write-Host "env:AGENT_RELEASEDIRECTORY = $env:AGENT_RELEASEDIRECTORY"
     ls "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\Release\"
    }
