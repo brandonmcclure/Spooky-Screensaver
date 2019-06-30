@@ -6,7 +6,7 @@ I want a screensaver for Halloween that will display spiders and other creepy cr
 
 ### Prerequisites
 
-You should be able to right click on the .scr file and install.
+You should be able to right click on the .scr file and install. I have tested this on Windows 10 home.
 
 ## License
 
