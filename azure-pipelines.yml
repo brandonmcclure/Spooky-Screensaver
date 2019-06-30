@@ -1,5 +1,13 @@
 trigger:
-- master
+ batch: true
+ branches:
+    include:
+    - master
+    paths:
+    include:
+    - SpiderScreensaver.sln
+    - SpiderScreensaver/*
+    - build/*
 
 pool:
   name: Hosted VS2017
