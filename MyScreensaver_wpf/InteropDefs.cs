@@ -27,20 +27,24 @@ using System.Runtime.InteropServices;
 //From: https://github.com/wbsimms/WBSScreenSaver
 namespace WaveSim
 {
-    public class Win32API
+    public class Win32Api
     {
+        protected Win32Api()
+        {
+        }
+
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool GetClientRect(IntPtr hWnd, ref RECT lpRect);
+        public static extern bool GetClientRect(IntPtr hWnd, ref Rect lpRect);
     }
 
     //[Serializable, StructLayout(LayoutKind.Sequential)]
-    public struct RECT
+    public struct Rect
     {
-        public int Left;
-        public int Top;
-        public int Right;
-        public int Bottom;
+        public int Left { get; private set; }
+        public int Top { get; private set; }
+        public int Right { get; private set; }
+        public int Bottom { get; private set; }
     }
 
     public abstract class WindowStyles
@@ -97,7 +101,6 @@ namespace WaveSim
         public const uint WS_EX_ACCEPTFILES = 0x00000010;
         public const uint WS_EX_TRANSPARENT = 0x00000020;
 
-        //#if(WINVER >= 0x0400)
         public const uint WS_EX_MDICHILD = 0x00000040;
         public const uint WS_EX_TOOLWINDOW = 0x00000080;
         public const uint WS_EX_WINDOWEDGE = 0x00000100;
@@ -117,20 +120,17 @@ namespace WaveSim
 
         public const uint WS_EX_OVERLAPPEDWINDOW = (WS_EX_WINDOWEDGE | WS_EX_CLIENTEDGE);
         public const uint WS_EX_PALETTEWINDOW = (WS_EX_WINDOWEDGE | WS_EX_TOOLWINDOW | WS_EX_TOPMOST);
-        //#endif /* WINVER >= 0x0400 */
 
-        //#if(_WIN32_WINNT >= 0x0500)
         public const uint WS_EX_LAYERED = 0x00080000;
-        //#endif /* _WIN32_WINNT >= 0x0500 */
 
-        //#if(WINVER >= 0x0500)
         public const uint WS_EX_NOINHERITLAYOUT = 0x00100000; // Disable inheritence of mirroring by children
         public const uint WS_EX_LAYOUTRTL = 0x00400000; // Right to left mirroring
-        //#endif /* WINVER >= 0x0500 */
 
-        //#if(_WIN32_WINNT >= 0x0500)
         public const uint WS_EX_COMPOSITED = 0x02000000;
         public const uint WS_EX_NOACTIVATE = 0x08000000;
-        //#endif /* _WIN32_WINNT >= 0x0500 */
+
+        protected WindowStyles()
+        {
+        }
     }
 }

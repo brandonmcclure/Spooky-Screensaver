@@ -81,8 +81,8 @@ namespace MyScreensaver_wpf
 				MainWindow window = new MainWindow();
 				Int32 previewHandle = Convert.ToInt32(e.Args[1]);
 				IntPtr pPreviewHnd = new IntPtr(previewHandle);
-				RECT lpRect = new RECT();
-				bool bGetRect = Win32API.GetClientRect(pPreviewHnd, ref lpRect);
+                WaveSim.Rect lpRect = new WaveSim.Rect();
+				bool bGetRect = Win32Api.GetClientRect(pPreviewHnd, ref lpRect);
 
 				HwndSourceParameters sourceParams = new HwndSourceParameters("sourceParams");
 
