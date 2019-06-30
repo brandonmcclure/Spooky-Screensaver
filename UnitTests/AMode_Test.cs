@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using MyScreensaver_wpf;
@@ -9,14 +10,24 @@ namespace UnitTests
     public class AMode_Test
     {
         [TestMethod]
-        public void TestMethod1()
+        public void moveTimer_Tick_ShouldCallTheTickFunctionOnAllSprite()
         {
             AMode aMode = new AMode();
-            Mock<iSprite> sprite = new Mock<iSprite>();
-            aMode.Sprite_wfCollection.Add(sprite.Object);
+            List<Mock<ASprite>> mockedSprites = new List<Mock<ASprite>>();
+
+            for (int index = 0; index <= 9; index++){
+                Mock<ASprite> sprite = new Mock<ASprite>();
+                aMode.Sprite_wfCollection.Add(sprite.Object);
+                mockedSprites.Add(sprite);
+            }
+           
 
             aMode.moveTimer_Tick(new object(),new EventArgs());
-            sprite.Verify(mock => mock.tick(), Times.Once());
+
+            for (int index = 0; index <= 9; index++)
+            {
+                mockedSprites[index].Verify(mock => mock.tick(), Times.Once());
+            }
         }
     }
 }

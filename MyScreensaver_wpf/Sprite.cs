@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyScreensaver_wpf
 {
-    public abstract class iSprite : IDisposable
+    public abstract class ASprite : IDisposable
     {
         public int width;
         public int height;
@@ -47,7 +47,7 @@ namespace MyScreensaver_wpf
         }
 
         // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~iSprite() {
+        // ~ASprite() {
         //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
         //   Dispose(false);
         // }
@@ -62,13 +62,13 @@ namespace MyScreensaver_wpf
         }
         #endregion
     }
-    public class Sprite_wf : iSprite
+    public class Sprite_wf : ASprite
     {
         private bool disposedValue = false; // To detect redundant calls
         public System.Windows.Forms.PictureBox _pictureBox;
         public string movementType { get; set; } = "Crawl";
 
-        public Sprite_wf(System.Windows.Forms.PictureBox pictureBox, Image sourceTileset, Rectangle _playingBounds,int tilex, int tiley)
+        public Sprite_wf(Image sourceTileset, Rectangle _playingBounds,int tilex, int tiley)
         {
             tilesheet = sourceTileset;
             _pictureBox = pictureBox;

@@ -17,11 +17,11 @@ namespace MyScreensaver_wpf
     public class AMode : IMode
     {
         public IConfiguration _configuration { get; set; }
-        public List<iSprite> Sprite_wfCollection = new List<iSprite>();
+        public List<ASprite> Sprite_wfCollection = new List<ASprite>();
 
         public virtual void moveTimer_Tick(object sender, EventArgs e)
         {
-            foreach (Sprite_wf spr in Sprite_wfCollection)
+            foreach (var spr in Sprite_wfCollection)
             {
                 spr.tick();
             }
@@ -36,9 +36,7 @@ namespace MyScreensaver_wpf
         public WinterMode(Rectangle Bounds, IConfiguration configuration)
         {
             _configuration = configuration;
-            //mySprite_wf = new Sprite_wf(pictureBox, SpiderScreensaver.Properties.Resources.SnowSprite, Bounds, 98, 98 );
-            //mySprite_wf.movementType = "Fall";
-            //Sprite_wfCollection.Add(mySprite_wf);
+            
             Configure();
         }
         public void moveTimer_Tick(object sender, EventArgs e)
@@ -52,10 +50,9 @@ namespace MyScreensaver_wpf
         }
         public void Configure()
         {
-            /*
-             * If I need to do any configuration I would "override" this method
-             */
-
+           var mySprite_wf = new Sprite_wf( SpiderScreensaver.Properties.Resources.SnowSprite, Bounds, 98, 98 );
+            mySprite_wf.movementType = "Fall";
+            Sprite_wfCollection.Add(mySprite_wf);
         }
     }
 
