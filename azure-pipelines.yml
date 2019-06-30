@@ -17,15 +17,11 @@ pool:
   - java
   - vstest
 
-#Your build pipeline references an undefined variable named ‘Parameters.solution’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
-#Your build pipeline references an undefined variable named ‘Parameters.solution’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
-#Your build pipeline references the ‘BuildPlatform’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
-#Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
-#Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
-#Your build pipeline references the ‘BuildPlatform’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
-#Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
-#Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
-#Your build pipeline references an undefined variable named ‘Get-Location’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+variables:
+  configuration: debug
+  system.debug: false
+  BuildPlatform: any cpu
+  BuildConfiguration: release
 
 steps:
 - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
@@ -44,12 +40,12 @@ steps:
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
   inputs:
-    restoreSolution: '$(Parameters.solution)'
+    restoreSolution: '**\*.sln'
 
 - task: VSBuild@1
   displayName: 'Build solution **\*.sln'
   inputs:
-    solution: '$(Parameters.solution)'
+    solution: '**\*.sln'
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'
 
@@ -80,16 +76,15 @@ steps:
     Contents: '**\bin\$(BuildConfiguration)\**'
     TargetFolder: '$(build.artifactstagingdirectory)'
 
-- powershell: |
-   # Write your powershell commands here.
-   
+- powershell: |   
    Write-Host " We are: at $(Get-Location)"
    Write-Host "env:SYSTEM_ARTIFACTSDIRECTORY = $env:SYSTEM_ARTIFACTSDIRECTORY"
    
-   Write-Host "env:AGENT_RELEASEDIRECTORY = $env:AGENT_RELEASEDIRECTORY"
-   ls "$env:SYSTEM_ARTIFACTSDIRECTORY\SpiderScreensaver\bin\Release"
-   
-   copy-item "$env:SYSTEM_ARTIFACTSDIRECTORY\SpiderScreensaver\bin\Release\SpiderScreensaver.exe" "$env:SYSTEM_ARTIFACTSDIRECTORY\SpiderScreensaver\bin\Release\SpiderScreensaver.scr"
+   if ($(system.debug)){}
+    Write-Host "env:AGENT_RELEASEDIRECTORY = $env:AGENT_RELEASEDIRECTORY"
+    ls "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\Release\"
+   }
+   copy-item "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\Release\MyScreensaver_wpf.exe" "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\Release\MyScreensaver_wpf.scr"
    
    # Use the environment variables input below to pass secret variables to this script.
   displayName: 'copy exe into .scr file'
