@@ -13,7 +13,10 @@ namespace MyScreensaver_wpf
         IConfiguration _configuration { get; set; }
         void moveTimer_Tick(object sender, EventArgs e);
     }
-
+    class WinterModeConfiguration
+    {
+        int NumberOFSnowflakes { get; set; }
+    }
     public class AMode : IMode
     {
         public IConfiguration _configuration { get; set; }

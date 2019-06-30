@@ -126,6 +126,7 @@
     </ApplicationDefinition>
     <Compile Include="Mode.cs" />
     <Compile Include="Sprite.cs" />
+    <Compile Include="SpriteLibrary.cs" />
     <Page Include="Blackout.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

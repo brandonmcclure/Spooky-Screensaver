@@ -4,6 +4,11 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Shapes;
 
 namespace MyScreensaver_wpf
 {
@@ -62,6 +67,85 @@ namespace MyScreensaver_wpf
         }
         #endregion
     }
+    class Sprite_wpf : iSprite
+    {
+        System.Windows.Shapes.Rectangle rec = new System.Windows.Shapes.Rectangle()
+        {
+            Width = width,
+            Height = height,
+            Fill = Brushes.Green,
+            Stroke = Brushes.Red,
+            StrokeThickness = 2,
+        };
+
+        
+        Sprite_wpf()
+        {
+            // Add to a canvas for example
+            Canvas.Children.Add(rec);
+            Canvas.SetTop(rec, top);
+            Canvas.SetLeft(rec, left);
+
+            RectangleGeometry myRectangleGeometry = new RectangleGeometry();
+            myRectangleGeometry.Rect = new Rect(0, 0, 95, 95);
+
+            Path myPath = new Path();
+            myPath.Fill = System.Windows.Media.Brushes.AliceBlue;
+            var fullBitmap = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://application:,,,/Resources/SnowSprite.png"));
+            Int32Rect croppRect = new Int32Rect(0, 0, 95, 95);
+            var croppedBitmap = new System.Windows.Media.Imaging.CroppedBitmap(fullBitmap, croppRect);
+
+            var mybrush = new ImageBrush(croppedBitmap);
+            mybrush.Transform = new TranslateTransform(0, 0);
+            mybrush.AlignmentX = AlignmentX.Left;
+            mybrush.AlignmentY = AlignmentY.Top;
+            mybrush.Stretch = Stretch.Fill;
+            myPath.Fill = mybrush;
+            myPath.StrokeThickness = 1;
+            myPath.Stroke = System.Windows.Media.Brushes.Black;
+            myPath.Data = myRectangleGeometry;
+
+            var transformGroup = new TransformGroup();
+            RectAnimation myRectAnimation = new RectAnimation();
+            myRectAnimation.Duration = TimeSpan.FromSeconds(2);
+            myRectAnimation.FillBehavior = FillBehavior.HoldEnd;
+
+            // Set the animation to repeat forever. 
+            myRectAnimation.RepeatBehavior = RepeatBehavior.Forever;
+
+            // Set the From and To properties of the animation.
+            myRectAnimation.From = new Rect(0, 0, 100, 100);
+            myRectAnimation.To = new Rect(0, this.MainGrid.ActualHeight, 200, 50);
+            TranslateTransform myTranslateTransform = new TranslateTransform();
+            Snowflake01.RenderTransform = myTranslateTransform;
+            //myTranslateTransform.BeginAnimation(TranslateTransform.YProperty, myRectAnimation);
+
+            //Control Rotation speed
+            DoubleAnimation da = new DoubleAnimation();
+            da.From = 0;
+            da.To = 360;
+            da.Duration = new Duration(TimeSpan.FromMilliseconds(2000));
+            da.RepeatBehavior = RepeatBehavior.Forever;
+            RotateTransform myRotateTransform = new RotateTransform();
+            myRotateTransform.CenterX = Snowflake01.Width / 2;
+            myRotateTransform.CenterY = Snowflake01.Height / 2;
+
+            transformGroup.Children.Add(myRotateTransform);
+
+            Snowflake01.RenderTransform = transformGroup;
+            myRotateTransform.BeginAnimation(RotateTransform.AngleProperty, da);
+        }
+        public override void AnimateSprite()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void ChangeDirection(int newDirection)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    class Sprite_wf : iSprite
     public class Sprite_wf : iSprite
     {
         private bool disposedValue = false; // To detect redundant calls

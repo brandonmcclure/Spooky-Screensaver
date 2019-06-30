@@ -32,6 +32,8 @@ namespace MyScreensaver_wpf
         private int currentFrame;
         private TimeSpan timeTillNextFrame;
         private System.Windows.Threading.DispatcherTimer dispatcherTimer;
+        private SpriteLibrary _spriteLibrary = new SpriteLibrary();
+        
         private System.Drawing.Rectangle windowBounds;
 
         public MainWindow()
@@ -75,6 +77,12 @@ namespace MyScreensaver_wpf
             }
             else if (_configuration["ActiveMode"] == "WinterMode")
             {
+                int numberOfSprites;
+                 if(!Int32.TryParse(_configuration["WinterMode\\NumberOFSnowflakes"], out numberOfSprites))
+                {
+                    numberOfSprites = 5;
+                }
+                _spriteLibrary.GenerateSprites(SpriteType.Snowflake, numberOfSprites);
                 IMode myMode = new WinterMode(windowBounds, _configuration);
 
                 dispatcherTimer.Tick += new EventHandler(myMode.moveTimer_Tick);
@@ -115,7 +123,7 @@ namespace MyScreensaver_wpf
 
             Snowflake01.RenderTransform = transformGroup;
             myRotateTransform.BeginAnimation(RotateTransform.AngleProperty, da);
-            
+
         }
 
         private void OnUpdate(object sender, object e)
