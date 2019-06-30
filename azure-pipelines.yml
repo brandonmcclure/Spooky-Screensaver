@@ -3,7 +3,7 @@ trigger:
  branches:
     include:
     - master
-    paths:
+ paths:
     include:
     - SpiderScreensaver.sln
     - SpiderScreensaver/*
