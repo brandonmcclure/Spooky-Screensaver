@@ -96,8 +96,6 @@ namespace MyScreensaver_wpf
             Bitmap tile = bTileSheet.Clone(new Rectangle(imageStartX, imageStartY, width, height), format);
 
 
-            //_pictureBox.Image =tile;
-
             bTileSheet.Dispose();
 
         }
@@ -112,11 +110,8 @@ namespace MyScreensaver_wpf
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects).
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
 
                 disposedValue = true;
             }
@@ -145,59 +140,6 @@ namespace MyScreensaver_wpf
             {
                 ChangeDirection(rand.Next(0, 3));
             }
-            if (movementType == "Random")
-            {
-                //_pictureBox.Left = rand.Next(Math.Max(1, playingBounds.Width - _pictureBox.Width));
-                //_pictureBox.Top = rand.Next(Math.Max(1, playingBounds.Height - _pictureBox.Height));
-            }
-
-            else if (movementType == "Crawl")
-            {
-                //Move down
-                if (direction == 0)
-                {
-                    //_pictureBox.Top += MovementSpeed;
-                    //if (playingBounds.Bottom <= _pictureBox.Top)
-                    //{
-                    //    //_pictureBox.Top = playingBounds.Top - _pictureBox.Height;
-                    //}
-                }
-                //Move right
-                else if (direction == 1)
-                {
-                    //_pictureBox.Left += MovementSpeed;
-                    //if (playingBounds.Right < _pictureBox.Left)
-                    //{
-                    //    _pictureBox.Left = playingBounds.Left - _pictureBox.Width;
-                    //}
-                }
-                //Move up
-                else if (direction == 2)
-                {
-                    //_pictureBox.Top -= MovementSpeed;
-                    //if (playingBounds.Top > _pictureBox.Bottom)
-                    //{
-                    //    _pictureBox.Top = playingBounds.Bottom;
-                    //}
-                }
-                //Move Left
-                else if (direction == 3)
-                {
-                    //_pictureBox.Left -= MovementSpeed;
-                    //if (playingBounds.Left > _pictureBox.Right)
-                    //{
-                    //    _pictureBox.Left = playingBounds.Right;
-                    //}
-                }
-            }
-            else if (movementType == "Fall")
-            {
-                //_pictureBox.Top += MovementSpeed;
-                //if (playingBounds.Bottom <= _pictureBox.Top)
-                //{
-                //    _pictureBox.Top = playingBounds.Top - _pictureBox.Height;
-                //}
-            }
-        }
+         }
     }
 }

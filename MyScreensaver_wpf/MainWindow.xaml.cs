@@ -70,14 +70,10 @@ namespace MyScreensaver_wpf
 
             if (_configuration["ActiveMode"] == "HalloweenMode")
             {
-                //IMode myMode = new HalloweenMode(this.MainGrid. this.Bounds, _configuration);
-                //dispatcherTimer.Tick += new EventHandler(myMode.moveTimer_Tick);
+
             }
             else if (_configuration["ActiveMode"] == "WinterMode")
             {
-                //IMode myMode = new WinterMode(windowBounds, _configuration);
-
-                //dispatcherTimer.Tick += new EventHandler(myMode.moveTimer_Tick);
                 int minSprites;
                 int maxSprites;
                 if (!int.TryParse(_configuration["WinterMode:minNumberOfSprites"], out minSprites))
@@ -96,7 +92,9 @@ namespace MyScreensaver_wpf
 
 
             WindowState = WindowState.Maximized;
-            // Mouse.OverrideCursor = Cursors.None;
+#if DEBUG
+                Mouse.OverrideCursor = Cursors.None;
+#endif
         }
 
         private void rotateAnimationExample()
@@ -114,7 +112,6 @@ namespace MyScreensaver_wpf
             myRectAnimation.To = new Rect(0, this.MainGrid.ActualHeight, 200, 50);
             TranslateTransform myTranslateTransform = new TranslateTransform();
             Snowflake01.RenderTransform = myTranslateTransform;
-            //myTranslateTransform.BeginAnimation(TranslateTransform.YProperty, myRectAnimation);
 
             //Control Rotation speed
             DoubleAnimation da = new DoubleAnimation();
@@ -142,7 +139,7 @@ namespace MyScreensaver_wpf
                 this.currentFrame = (this.currentFrame + 1 + NumberOfFrames) % NumberOfFrames;
                 var column = CalculateColumn();
                 var row = CalculateRow();
-                this.SpriteSheetOffset.X = this.currentFrame += 1;//column * FrameWidth;
+                this.SpriteSheetOffset.X = this.currentFrame += 1;
                 this.SpriteSheetOffset.Y = row * FrameHeight;
 
                 UpdateDebugText();
@@ -247,7 +244,6 @@ namespace MyScreensaver_wpf
                 Storyboard ellipseStoryboard = new Storyboard();
 
                 ellipseStoryboard.Children.Add(myRectAnimation);
-                //ellipseStoryboard.Children.Add(da);
 
                 // Start the storyboard when the Path loads.
                 myPath.Loaded += delegate (object sender, RoutedEventArgs e)
@@ -261,9 +257,6 @@ namespace MyScreensaver_wpf
                 Content = containerCanvas;
 
             }
-            
-            int x = 0;
-            int y = x;
         }
         public void RectAnimationExample()
         {
@@ -328,7 +321,6 @@ namespace MyScreensaver_wpf
             // Create a storyboard to apply the animation.
             Storyboard ellipseStoryboard = new Storyboard();
             ellipseStoryboard.Children.Add(myRectAnimation);
-            //ellipseStoryboard.Children.Add(da);
 
             // Start the storyboard when the Path loads.
             myPath.Loaded += delegate (object sender, RoutedEventArgs e)

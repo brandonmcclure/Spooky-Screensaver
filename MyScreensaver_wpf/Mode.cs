@@ -17,7 +17,7 @@ namespace MyScreensaver_wpf
     public class AMode : IMode
     {
         public IConfiguration _configuration { get; set; }
-        public List<ASprite> Sprite_wfCollection = new List<ASprite>();
+        private List<ASprite> Sprite_wfCollection = new List<ASprite>();
 
         public virtual void moveTimer_Tick(object sender, EventArgs e)
         {
