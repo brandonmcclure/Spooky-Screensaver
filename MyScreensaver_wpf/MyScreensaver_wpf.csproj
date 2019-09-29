@@ -124,8 +124,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Mode.cs" />
-    <Compile Include="Sprite.cs" />
     <Page Include="Blackout.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
