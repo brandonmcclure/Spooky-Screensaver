@@ -50,7 +50,8 @@ namespace MyScreensaver_wpf
         }
         public void Configure()
         {
-           var mySprite_wf = new Sprite_wf( SpiderScreensaver.Properties.Resources.SnowSprite, Bounds, 98, 98 );
+            Rectangle Bounds = new Rectangle(0, 0, 100, 100);
+            var mySprite_wf = new Sprite_wf(MyScreensaver_wpf.Properties.Resources.SnowSprite, Bounds, 98, 98 );
             mySprite_wf.movementType = "Fall";
             Sprite_wfCollection.Add(mySprite_wf);
         }
