@@ -124,11 +124,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="iSprite.cs" />
+    <Compile Include="SpriteHandler\iSprite.cs" />
     <Compile Include="Modes\Haloween\HaloweenCrawlies.cs" />
     <Compile Include="Modes\Winter\SnowSprite.cs" />
-    <Compile Include="SprintAnimationEventArgs.cs" />
-    <Compile Include="Sprite.cs" />
+    <Compile Include="SpriteHandler\SprintAnimationEventArgs.cs" />
+    <Compile Include="SpriteHandler\Sprite.cs" />
     <Page Include="Blackout.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
