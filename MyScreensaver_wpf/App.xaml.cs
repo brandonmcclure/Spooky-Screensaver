@@ -20,20 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Windows.Media;
-using WaveSim;
 using Application = System.Windows.Application;
 using Microsoft.Extensions.Configuration;
+using WaveSim;
 
 namespace MyScreensaver_wpf
 {
@@ -57,21 +49,25 @@ namespace MyScreensaver_wpf
                      Screen s = Screen.PrimaryScreen;
                     if (s != Screen.PrimaryScreen)
 					{
-						Blackout window = new Blackout();
-						window.Left = s.WorkingArea.Left;
-						window.Top = s.WorkingArea.Top;
-						window.Width = s.WorkingArea.Width;
-						window.Height = s.WorkingArea.Height;
-						window.Show();
+                    Blackout window = new Blackout
+                    {
+                        Left = s.WorkingArea.Left,
+                        Top = s.WorkingArea.Top,
+                        Width = s.WorkingArea.Width,
+                        Height = s.WorkingArea.Height
+                    };
+                    window.Show();
 					}
 					else
 					{
 
-                    MainWindow window = new MainWindow(configuration);
-                    window.Left = s.WorkingArea.Left;
-                    window.Top = s.WorkingArea.Top;
-                    window.Width = s.WorkingArea.Width;
-                    window.Height = s.WorkingArea.Height;
+                    MainWindow window = new MainWindow(configuration)
+                    {
+                        Left = s.WorkingArea.Left,
+                        Top = s.WorkingArea.Top,
+                        Width = s.WorkingArea.Width,
+                        Height = s.WorkingArea.Height
+                    };
                     window.Show();
 					}
 				//}
@@ -83,16 +79,17 @@ namespace MyScreensaver_wpf
 				IntPtr pPreviewHnd = new IntPtr(previewHandle);
                 WaveSim.Rect lpRect = new WaveSim.Rect();
 
-				HwndSourceParameters sourceParams = new HwndSourceParameters("sourceParams");
+                HwndSourceParameters sourceParams = new HwndSourceParameters("sourceParams")
+                {
+                    PositionX = 0,
+                    PositionY = 0,
+                    Height = lpRect.Bottom - lpRect.Top,
+                    Width = lpRect.Right - lpRect.Left,
+                    ParentWindow = pPreviewHnd,
+                    WindowStyle = (int)(WindowStyles.WS_VISIBLE | WindowStyles.WS_CHILD | WindowStyles.WS_CLIPCHILDREN)
+                };
 
-				sourceParams.PositionX = 0;
-				sourceParams.PositionY = 0;
-				sourceParams.Height = lpRect.Bottom - lpRect.Top;
-				sourceParams.Width = lpRect.Right - lpRect.Left;
-				sourceParams.ParentWindow = pPreviewHnd;
-				sourceParams.WindowStyle = (int)(WindowStyles.WS_VISIBLE | WindowStyles.WS_CHILD | WindowStyles.WS_CLIPCHILDREN);
-
-				winWPFContent = new HwndSource(sourceParams);
+                winWPFContent = new HwndSource(sourceParams);
 				winWPFContent.Disposed += (o, args) => window.Close();
 				winWPFContent.RootVisual = window.MainGrid;
 
