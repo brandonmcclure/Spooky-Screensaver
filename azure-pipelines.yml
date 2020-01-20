@@ -83,6 +83,14 @@ stages:
       displayName: 'Publish Artifact: drop'
       inputs:
         PathtoPublish: '$(build.artifactstagingdirectory)'
+    - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
+      displayName: 'Run Code Analysis'
+    - task: PublishSymbols@2
+      displayName: 'Publish symbols path'
+      inputs:
+        SearchPattern: '**\bin\**\*.pdb'
+        PublishSymbols: false
+      continueOnError: true
 - stage: Test
   dependsOn:
   - Build
@@ -98,24 +106,3 @@ stages:
         platform: '$(BuildPlatform)'
         configuration: '$(BuildConfiguration)'
         diagnosticsEnabled: True
-    - task: PublishSymbols@2
-      displayName: 'Publish symbols path'
-      inputs:
-        SearchPattern: '**\bin\**\*.pdb'
-        PublishSymbols: false
-      continueOnError: true
-- stage: CodeAnalysis
-  dependsOn:
-  - Build
-  jobs:
-  - job: SonarCloud
-    steps: 
-    - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
-      displayName: 'Run Code Analysis'
-
-
-
-
-
-
-
