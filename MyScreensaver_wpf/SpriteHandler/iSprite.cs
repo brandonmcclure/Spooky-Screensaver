@@ -14,8 +14,8 @@ using System.Windows.Shapes;
 
 namespace MyScreensaver_wpf
 {
-    public interface iSprite
+    public interface ISprite
     {
-        System.Windows.Shapes.Path doThing(RectangleGeometry RectangleGeometry, Grid grid, string spriteName, FrameworkElement frameworkElement);
+        System.Windows.Shapes.Path DoThing(RectangleGeometry RectangleGeometry, Grid grid, string spriteName, FrameworkElement frameworkElement);
     }
 }

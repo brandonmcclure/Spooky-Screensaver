@@ -119,11 +119,11 @@
     </Compile>
     <Compile Include="Configuration.cs" />
     <Compile Include="Exceptions.cs" />
-    <Compile Include="InteropDefs.cs" />
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="InteropDefs.cs" />
     <Compile Include="SpriteHandler\iSprite.cs" />
     <Compile Include="Modes\Haloween\HaloweenCrawlies.cs" />
     <Compile Include="Modes\Winter\SnowSprite.cs" />

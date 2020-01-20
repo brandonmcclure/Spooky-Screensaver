@@ -35,7 +35,6 @@ namespace MyScreensaver_wpf
         private TimeSpan timeTillNextFrame;
         private System.Windows.Threading.DispatcherTimer dispatcherTimer;
         private System.Drawing.Rectangle windowBounds;
-        Random Randomer = new Random();
         Canvas containerCanvas = new Canvas();
         List<string> AnimatingSprites = new List<string>();
 
@@ -96,7 +95,7 @@ namespace MyScreensaver_wpf
                     maxSprites = 1;
                 }
                 
-                SnowFallingAnimation(Randomer.Next(minSprites, maxSprites));
+                SnowFallingAnimation(RandomNumber(minSprites, maxSprites));
             }
 
 
@@ -106,31 +105,37 @@ namespace MyScreensaver_wpf
 #endif
         }
 
-        private void rotateAnimationExample()
+        private void RotateAnimationExample()
         {
             var transformGroup = new TransformGroup();
-            RectAnimation myRectAnimation = new RectAnimation();
-            myRectAnimation.Duration = TimeSpan.FromSeconds(2);
-            myRectAnimation.FillBehavior = FillBehavior.HoldEnd;
+            RectAnimation myRectAnimation = new RectAnimation
+            {
+                Duration = TimeSpan.FromSeconds(2),
+                FillBehavior = FillBehavior.HoldEnd,
 
-            // Set the animation to repeat forever. 
-            myRectAnimation.RepeatBehavior = RepeatBehavior.Forever;
+                // Set the animation to repeat forever. 
+                RepeatBehavior = RepeatBehavior.Forever,
 
-            // Set the From and To properties of the animation.
-            myRectAnimation.From = new Rect(0, 0, 100, 100);
-            myRectAnimation.To = new Rect(0, this.MainGrid.ActualHeight, 200, 50);
+                // Set the From and To properties of the animation.
+                From = new Rect(0, 0, 100, 100),
+                To = new Rect(0, this.MainGrid.ActualHeight, 200, 50)
+            };
             TranslateTransform myTranslateTransform = new TranslateTransform();
             Snowflake01.RenderTransform = myTranslateTransform;
 
             //Control Rotation speed
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 360;
-            da.Duration = new Duration(TimeSpan.FromMilliseconds(2000));
-            da.RepeatBehavior = RepeatBehavior.Forever;
-            RotateTransform myRotateTransform = new RotateTransform();
-            myRotateTransform.CenterX = Snowflake01.Width / 2;
-            myRotateTransform.CenterY = Snowflake01.Height / 2;
+            DoubleAnimation da = new DoubleAnimation
+            {
+                From = 0,
+                To = 360,
+                Duration = new Duration(TimeSpan.FromMilliseconds(2000)),
+                RepeatBehavior = RepeatBehavior.Forever
+            };
+            RotateTransform myRotateTransform = new RotateTransform
+            {
+                CenterX = Snowflake01.Width / 2,
+                CenterY = Snowflake01.Height / 2
+            };
 
             transformGroup.Children.Add(myRotateTransform);
 
@@ -203,9 +208,9 @@ namespace MyScreensaver_wpf
 
                 RectangleGeometry myRectangleGeometry = new RectangleGeometry();
 
-                var randomStartY = Randomer.Next(0, (int)this.MainGrid.ActualWidth - FrameWidth);
-                int randomStartX = -Randomer.Next(FrameHeight, FrameHeight * 4);
-                var randomDuration = Randomer.Next(1000, 4000);
+                var randomStartY = RandomNumber(0, (int)this.MainGrid.ActualWidth - FrameWidth);
+                int randomStartX = -RandomNumber(FrameHeight, FrameHeight * 4);
+                var randomDuration = RandomNumber(1000, 4000);
 
                 myRectangleGeometry.Rect = new Rect(randomStartY, randomStartX, FrameWidth, FrameHeight);
                 // Assign the geometry a name so that
@@ -214,7 +219,7 @@ namespace MyScreensaver_wpf
                     spriteName, myRectangleGeometry);
 
                 Sprite sprite = new SnowSprite(FrameWidth,FrameHeight, 1000,4000, "SnowSprite.png",randomStartY,randomStartX);
-                var p = sprite.doThing(myRectangleGeometry, this.MainGrid, spriteName, this);
+                var p = sprite.DoThing(myRectangleGeometry, this.MainGrid, spriteName, this);
                 sprite.AnimationComplete += HalloweenSpiderRectAnimation_Completed;
 
 
@@ -246,8 +251,8 @@ namespace MyScreensaver_wpf
 
                 RectangleGeometry myRectangleGeometry = new RectangleGeometry();
 
-                var randomStartY = Randomer.Next(0, FrameWidth);
-                int randomStartX = -Randomer.Next(FrameHeight, FrameHeight * 4);
+                var randomStartY = RandomNumber(0, FrameWidth);
+                int randomStartX = -RandomNumber(FrameHeight, FrameHeight * 4);
                 
                 myRectangleGeometry.Rect = new Rect(randomStartY, randomStartX, FrameWidth, FrameHeight);
                 // Assign the geometry a name so that
@@ -256,7 +261,7 @@ namespace MyScreensaver_wpf
                     spriteName, myRectangleGeometry);
 
                 Sprite sprite = new SpiderSprite(FrameWidth, FrameHeight,1000,4000,"png",randomStartY,randomStartX);
-                var p = sprite.doThing(myRectangleGeometry, this.MainGrid, spriteName,this);
+                var p = sprite.DoThing(myRectangleGeometry, this.MainGrid, spriteName,this);
                 sprite.AnimationComplete += HalloweenSpiderRectAnimation_Completed;
 
 
@@ -277,6 +282,23 @@ namespace MyScreensaver_wpf
             int y = x;
         }
 
+        //Function to get a random number 
+        private static readonly Random random = new Random();
+        private static readonly object syncLock = new object();
+        public static int RandomNumber(int min, int max)
+        {
+            lock (syncLock)
+            { // synchronize
+                return random.Next(min, max);
+            }
+        }
+        public static double RandomNumber()
+        {
+            lock (syncLock)
+            { // synchronize
+                return random.NextDouble();
+            }
+        }
     }
 
 }

@@ -14,13 +14,13 @@ using System.Windows.Shapes;
 
 namespace MyScreensaver_wpf
 {
-    public abstract class Sprite : iSprite
+    public abstract class Sprite : ISprite
     {        
         public int _FrameWidth { get; private set; }
         public int _FrameHeight { get; private set; }
         public int _randomDurationStart { get; private set; }
         public int _randomDurationEnd { get; private set; }
-        public string spriteSheetName { get; private set; }
+        public string SpriteSheetName { get; private set; }
         public int _randomStartY { get; private set; }
         public int _randomStartX { get; private set; }
 
@@ -36,7 +36,7 @@ namespace MyScreensaver_wpf
 
         }
 
-        public System.Windows.Shapes.Path doThing(RectangleGeometry RectangleGeometry, Grid grid, string spriteName, FrameworkElement frameworkElement)
+        public System.Windows.Shapes.Path DoThing(RectangleGeometry RectangleGeometry, Grid grid, string spriteName, FrameworkElement frameworkElement)
         {
 
             var randomDuration = RandomNumber(1000, 4000);
@@ -45,32 +45,38 @@ namespace MyScreensaver_wpf
             frameworkElement.RegisterName(
                 spriteName, RectangleGeometry);
 
-            System.Windows.Shapes.Path myPath = new System.Windows.Shapes.Path();
-            myPath.Fill = System.Windows.Media.Brushes.AliceBlue;
+            System.Windows.Shapes.Path myPath = new System.Windows.Shapes.Path
+            {
+                Fill = System.Windows.Media.Brushes.AliceBlue
+            };
             var fullBitmap = new BitmapImage(new Uri(@"pack://application:,,,/Resources/SnowSprite.png"));
             Int32Rect croppRect = new Int32Rect(0, 0, _FrameWidth, _FrameHeight);
             var croppedBitmap = new CroppedBitmap(fullBitmap, croppRect);
 
-            var mybrush = new ImageBrush(croppedBitmap);
-            mybrush.Transform = new TranslateTransform(0, 0);
-            mybrush.AlignmentX = AlignmentX.Left;
-            mybrush.AlignmentY = AlignmentY.Top;
-            mybrush.Stretch = Stretch.Fill;
+            var mybrush = new ImageBrush(croppedBitmap)
+            {
+                Transform = new TranslateTransform(0, 0),
+                AlignmentX = AlignmentX.Left,
+                AlignmentY = AlignmentY.Top,
+                Stretch = Stretch.Fill
+            };
             myPath.Fill = mybrush;
             myPath.StrokeThickness = 1;
             myPath.Stroke = System.Windows.Media.Brushes.Black;
             myPath.Data = RectangleGeometry;
 
-            RectAnimation myRectAnimation = new RectAnimation();
-            myRectAnimation.BeginTime = TimeSpan.FromSeconds(RandomNumber());
-            myRectAnimation.Duration = TimeSpan.FromMilliseconds(randomDuration);
-            myRectAnimation.FillBehavior = FillBehavior.HoldEnd;
-            // Set the animation to repeat forever. 
-            myRectAnimation.RepeatBehavior = RepeatBehavior.Forever;
+            RectAnimation myRectAnimation = new RectAnimation
+            {
+                BeginTime = TimeSpan.FromSeconds(RandomNumber()),
+                Duration = TimeSpan.FromMilliseconds(randomDuration),
+                FillBehavior = FillBehavior.HoldEnd,
+                // Set the animation to repeat forever. 
+                RepeatBehavior = RepeatBehavior.Forever,
 
-            // Set the From and To properties of the animation.
-            myRectAnimation.From = new Rect(_randomStartY, _randomStartX, _FrameWidth, _FrameHeight);
-            myRectAnimation.To = new Rect(_randomStartY, frameworkElement.ActualHeight, _FrameWidth, _FrameHeight);
+                // Set the From and To properties of the animation.
+                From = new Rect(_randomStartY, _randomStartX, _FrameWidth, _FrameHeight),
+                To = new Rect(_randomStartY, frameworkElement.ActualHeight, _FrameWidth, _FrameHeight)
+            };
 
             // Set the animation to target the Rect property
             // of the object named "MyAnimatedRectangleGeometry."
@@ -79,14 +85,18 @@ namespace MyScreensaver_wpf
                 myRectAnimation, new PropertyPath(RectangleGeometry.RectProperty));
 
             //Control Rotation speed
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 360;
-            da.Duration = new Duration(TimeSpan.FromMilliseconds(2000));
-            da.RepeatBehavior = RepeatBehavior.Forever;
-            RotateTransform myRotateTransform = new RotateTransform();
-            myRotateTransform.CenterX = RectangleGeometry.Rect.Width / 2;
-            myRotateTransform.CenterY = RectangleGeometry.Rect.Height / 2;
+            DoubleAnimation da = new DoubleAnimation
+            {
+                From = 0,
+                To = 360,
+                Duration = new Duration(TimeSpan.FromMilliseconds(2000)),
+                RepeatBehavior = RepeatBehavior.Forever
+            };
+            RotateTransform myRotateTransform = new RotateTransform
+            {
+                CenterX = RectangleGeometry.Rect.Width / 2,
+                CenterY = RectangleGeometry.Rect.Height / 2
+            };
 
             Storyboard.SetTargetName(da, spriteName);
             Storyboard.SetTargetProperty(

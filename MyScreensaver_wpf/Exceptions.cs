@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyScreensaver_wpf
 {
@@ -17,6 +13,15 @@ namespace MyScreensaver_wpf
         public IncorrectConfigurationException(string message)
            : base(message)
         {
+        }
+
+        public IncorrectConfigurationException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected IncorrectConfigurationException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext)
+        {
+            throw new NotImplementedException();
         }
     }
 }

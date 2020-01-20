@@ -14,41 +14,45 @@ namespace MyScreensaver_wpf.Modes.Winter
 {
     public class SnowSprite : Sprite
     {
-        private Random Randomer = new Random();
-
         public SnowSprite(int frameWidth, int frameHeight, int randomDurationStart, int randomDurationEnd, string spriteSheetName, int randomStartY, int randomStartX) : base(frameWidth, frameHeight, randomDurationStart, randomDurationEnd, spriteSheetName, randomStartY, randomStartX)
         {
         }
 
-        public System.Windows.Shapes.Path doThing(RectangleGeometry RectangleGeometry, Grid grid, string spriteName, FrameworkElement frameworkElement)
+        public new System.Windows.Shapes.Path DoThing(RectangleGeometry RectangleGeometry, Grid grid, string spriteName, FrameworkElement frameworkElement)
         {
 
-            System.Windows.Shapes.Path myPath = new System.Windows.Shapes.Path();
-            myPath.Fill = System.Windows.Media.Brushes.LightGray;
-            var fullBitmap = new BitmapImage(new Uri(@"pack://application:,,,/Resources/" + spriteSheetName));
+            System.Windows.Shapes.Path myPath = new System.Windows.Shapes.Path
+            {
+                Fill = System.Windows.Media.Brushes.LightGray
+            };
+            var fullBitmap = new BitmapImage(new Uri(@"pack://application:,,,/Resources/" + SpriteSheetName));
             Int32Rect croppRect = new Int32Rect(0, 0, _FrameWidth, _FrameHeight);
             var croppedBitmap = new CroppedBitmap(fullBitmap, croppRect);
 
-            JpegBitmapEncoder encoder = new JpegBitmapEncoder(); Guid photoID = System.Guid.NewGuid(); String photolocation = photoID.ToString() + ".jpg"; encoder.Frames.Add(BitmapFrame.Create((BitmapImage)fullBitmap)); using (var filestream = new FileStream(photolocation, FileMode.Create)) { encoder.Save(filestream); }
+            JpegBitmapEncoder encoder = new JpegBitmapEncoder(); Guid photoID = System.Guid.NewGuid(); String photolocation = photoID.ToString() + ".jpg"; encoder.Frames.Add(BitmapFrame.Create(fullBitmap)); using (var filestream = new FileStream(photolocation, FileMode.Create)) { encoder.Save(filestream); }
 
-            var mybrush = new ImageBrush(croppedBitmap);
-            mybrush.Transform = new TranslateTransform(0, 0);
-            mybrush.AlignmentX = AlignmentX.Left;
-            mybrush.AlignmentY = AlignmentY.Top;
-            mybrush.Stretch = Stretch.Fill;
+            ImageBrush mybrush = new ImageBrush(croppedBitmap)
+            {
+                Transform = new TranslateTransform(0, 0),
+                AlignmentX = AlignmentX.Left,
+                AlignmentY = AlignmentY.Top,
+                Stretch = Stretch.Fill
+            };
             myPath.Fill = mybrush;
             myPath.StrokeThickness = 1;
             myPath.Stroke = System.Windows.Media.Brushes.LightGray;
             myPath.Data = RectangleGeometry;
 
-            RectAnimation myRectAnimation = new RectAnimation();
-            myRectAnimation.BeginTime = TimeSpan.FromSeconds(Randomer.NextDouble());
-            myRectAnimation.Duration = TimeSpan.FromMilliseconds(RandomNumber(_randomDurationStart, _randomDurationEnd));
-            myRectAnimation.FillBehavior = FillBehavior.HoldEnd;
+            RectAnimation myRectAnimation = new RectAnimation
+            {
+                BeginTime = TimeSpan.FromSeconds(RandomNumber()),
+                Duration = TimeSpan.FromMilliseconds(RandomNumber(_randomDurationStart, _randomDurationEnd)),
+                FillBehavior = FillBehavior.HoldEnd,
 
-            // Set the From and To properties of the animation.
-            myRectAnimation.From = new Rect(RectangleGeometry.Rect.Y, RectangleGeometry.Rect.X, _FrameWidth, _FrameHeight);
-            myRectAnimation.To = new Rect(RectangleGeometry.Rect.Y, grid.ActualHeight, _FrameWidth, _FrameHeight);
+                // Set the From and To properties of the animation.
+                From = new Rect(RectangleGeometry.Rect.Y, RectangleGeometry.Rect.X, _FrameWidth, _FrameHeight),
+                To = new Rect(RectangleGeometry.Rect.Y, grid.ActualHeight, _FrameWidth, _FrameHeight)
+            };
 
             EventArgs ea = new EventArgs();
             myRectAnimation.Completed += new EventHandler(RectAnimation_Completed);
