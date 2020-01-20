@@ -1,4 +1,6 @@
-[![Build status](https://brandonmcclure89.visualstudio.com/Spooky-Screensaver/_apis/build/status/Spooky-Screensaver-.NET%20Desktop-CI)](https://brandonmcclure89.visualstudio.com/Spooky-Screensaver/_apis/build/status/Spooky-Screensaver-.NET%20Desktop-CI)
+[![Build Status](https://brandonmcclure89.visualstudio.com/Spooky-Screensaver/_apis/build/status/brandonmcclure.Spooky-Screensaver?branchName=master)](https://brandonmcclure89.visualstudio.com/Spooky-Screensaver/_build/latest?definitionId=4&branchName=master)
+
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=brandonmcclure_Spooky-Screensaver&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=brandonmcclure_Spooky-Screensaver) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=brandonmcclure_Spooky-Screensaver&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=brandonmcclure_Spooky-Screensaver) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=brandonmcclure_Spooky-Screensaver&metric=security_rating)](https://sonarcloud.io/dashboard?id=brandonmcclure_Spooky-Screensaver)
 
 # Spooky-Screensaver
 
