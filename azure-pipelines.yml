@@ -8,7 +8,6 @@ trigger:
     - SpiderScreensaver.sln
     - SpiderScreensaver/*
     - build/*
-
 pool:
   name: Hosted VS2017
   demands:
@@ -16,31 +15,51 @@ pool:
   - visualstudio
   - java
   - vstest
-
 variables:
   configuration: debug
   system.debug: false
   BuildPlatform: any cpu
   BuildConfiguration: release
+stages:
+- stage: BuildPrep
+- stage: Build
+  dependsOn:
+  - BuildPrep
+  jobs:
+  - job: SonarCloud
+    steps:
+    - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
+    displayName: 'Prepare analysis on SonarCloud'
+    inputs:
+      SonarCloud: 'sq cloud'
+      organization: 'brandonmcclure-github'
+      projectKey: 'brandonmcclure_Spooky-Screensaver'
+      projectName: 'Spooky-Screensaver'
+  - job: Nuget
+    steps:
+    - task: NuGetToolInstaller@0
+      displayName: 'Use NuGet 4.4.1'
+      inputs:
+        versionSpec: 4.4.1
+    - task: NuGetCommand@2
+      displayName: 'NuGet restore'
+      inputs:
+        restoreSolution: '**\*.sln'
+- stage: Test
+  dependsOn:
+  - Build
+- stage: CodeAnalysis
+  dependsOn:
+  - Build
+- stage: Publish
+  dependsOn:
+  - CodeAnalysis
+  - Test
 
 steps:
-- task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
-  displayName: 'Prepare analysis on SonarCloud'
-  inputs:
-    SonarCloud: 'sq cloud'
-    organization: 'brandonmcclure-github'
-    projectKey: 'brandonmcclure_Spooky-Screensaver'
-    projectName: 'Spooky-Screensaver'
 
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.4.1'
-  inputs:
-    versionSpec: 4.4.1
 
-- task: NuGetCommand@2
-  displayName: 'NuGet restore'
-  inputs:
-    restoreSolution: '**\*.sln'
+
 
 - task: VSBuild@1
   displayName: 'Build solution **\*.sln'
