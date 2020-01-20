@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
+using MyScreensaver_wpf.Modes.Haloween;
+using MyScreensaver_wpf.Modes.Winter;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,14 +29,17 @@ namespace MyScreensaver_wpf
         IConfiguration _configuration;
         private const int NumberOfColumns = 1;
         private const int NumberOfFrames = 1;
-        private const int FrameWidth = 95;
-        private const int FrameHeight = 95;
+        
         public static readonly TimeSpan TimePerFrame = TimeSpan.FromSeconds(1 / 60f);
         private int currentFrame;
         private TimeSpan timeTillNextFrame;
         private System.Windows.Threading.DispatcherTimer dispatcherTimer;
         private System.Drawing.Rectangle windowBounds;
         Random Randomer = new Random();
+        Canvas containerCanvas = new Canvas();
+        List<string> AnimatingSprites = new List<string>();
+
+        public int MaxConcurrentSpritesAnimating { get; private set; } = 2;
 
         public MainWindow()
         {
@@ -49,6 +54,8 @@ namespace MyScreensaver_wpf
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            NameScope.SetNameScope(this, new NameScope());
+
             dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(OnUpdate);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
@@ -61,6 +68,7 @@ namespace MyScreensaver_wpf
                 throw new IncorrectConfigurationException("Could not get the window bounds");
             }
 
+           
             DebugText.Visibility = System.Windows.Visibility.Hidden;
             if (_configuration["Debug"] == "1")
             {
@@ -70,7 +78,8 @@ namespace MyScreensaver_wpf
 
             if (_configuration["ActiveMode"] == "HalloweenMode")
             {
-
+                SolidColorBrush backgroundBrush = new SolidColorBrush(System.Windows.Media.Colors.LightGray);
+                this.Background = backgroundBrush;
             }
             else if (_configuration["ActiveMode"] == "WinterMode")
             {
@@ -140,9 +149,15 @@ namespace MyScreensaver_wpf
                 var column = CalculateColumn();
                 var row = CalculateRow();
                 this.SpriteSheetOffset.X = this.currentFrame += 1;
-                this.SpriteSheetOffset.Y = row * FrameHeight;
 
                 UpdateDebugText();
+            }
+            if (AnimatingSprites.Count() < MaxConcurrentSpritesAnimating)
+            {
+                if (_configuration["ActiveMode"] == "HalloweenMode")
+                {
+                    HalloweenCrawlies();
+                }
             }
             
         }
@@ -174,6 +189,8 @@ namespace MyScreensaver_wpf
         }
         public void SnowFallingAnimation(int numberOfSnowflakes)
         {
+            int FrameWidth = 95;
+            int FrameHeight = 95;
             // Create a NameScope for this page so that
             // Storyboards can be used.
             NameScope.SetNameScope(this, new NameScope());
@@ -181,102 +198,56 @@ namespace MyScreensaver_wpf
             List<string> sprites = new List<string>();
             for(int i = 1; i <= numberOfSnowflakes; i++)
             {
+                string spriteName = "SnowSprite" + i.ToString("0000");
+                AnimatingSprites.Add(spriteName);
+
                 RectangleGeometry myRectangleGeometry = new RectangleGeometry();
-                
-                var randomStartY = Randomer.Next(0, (int)this.MainGrid.ActualWidth- FrameWidth);
-                int randomStartX = -Randomer.Next(FrameHeight, FrameHeight * 10);
+
+                var randomStartY = Randomer.Next(0, (int)this.MainGrid.ActualWidth - FrameWidth);
+                int randomStartX = -Randomer.Next(FrameHeight, FrameHeight * 4);
                 var randomDuration = Randomer.Next(1000, 4000);
+
                 myRectangleGeometry.Rect = new Rect(randomStartY, randomStartX, FrameWidth, FrameHeight);
-                string spriteName = "Snowflake" + i.ToString("0000");
-                sprites.Add(spriteName);
                 // Assign the geometry a name so that
                 // it can be targeted by a Storyboard.
                 this.RegisterName(
                     spriteName, myRectangleGeometry);
 
-                Path myPath = new Path();
-                myPath.Fill = System.Windows.Media.Brushes.AliceBlue;
-                var fullBitmap = new BitmapImage(new Uri(@"pack://application:,,,/Resources/SnowSprite.png"));
-                Int32Rect croppRect = new Int32Rect(0, 0, FrameWidth, FrameHeight);
-                var croppedBitmap = new CroppedBitmap(fullBitmap, croppRect);
+                Sprite sprite = new SnowSprite(FrameWidth,FrameHeight, 1000,4000, "SnowSprite.png",randomStartY,randomStartX);
+                var p = sprite.doThing(myRectangleGeometry, this.MainGrid, spriteName, this);
+                sprite.AnimationComplete += HalloweenSpiderRectAnimation_Completed;
 
-                var mybrush = new ImageBrush(croppedBitmap);
-                mybrush.Transform = new TranslateTransform(0, 0);
-                mybrush.AlignmentX = AlignmentX.Left;
-                mybrush.AlignmentY = AlignmentY.Top;
-                mybrush.Stretch = Stretch.Fill;
-                myPath.Fill = mybrush;
-                myPath.StrokeThickness = 1;
-                myPath.Stroke = System.Windows.Media.Brushes.Black;
-                myPath.Data = myRectangleGeometry;
-
-                RectAnimation myRectAnimation = new RectAnimation();
-                myRectAnimation.BeginTime = TimeSpan.FromSeconds(Randomer.NextDouble());
-                myRectAnimation.Duration = TimeSpan.FromMilliseconds(randomDuration);
-                myRectAnimation.FillBehavior = FillBehavior.HoldEnd;
-                // Set the animation to repeat forever. 
-                myRectAnimation.RepeatBehavior = RepeatBehavior.Forever;
-
-                // Set the From and To properties of the animation.
-                myRectAnimation.From = new Rect(randomStartY, 0, FrameWidth, FrameHeight);
-                myRectAnimation.To = new Rect(randomStartY, this.MainGrid.ActualHeight, FrameWidth, FrameHeight);
-
-                // Set the animation to target the Rect property
-                // of the object named "MyAnimatedRectangleGeometry."
-                Storyboard.SetTargetName(myRectAnimation, spriteName);
-                Storyboard.SetTargetProperty(
-                    myRectAnimation, new PropertyPath(RectangleGeometry.RectProperty));
-
-                //Control Rotation speed
-                DoubleAnimation da = new DoubleAnimation();
-                da.From = 0;
-                da.To = 360;
-                da.Duration = new Duration(TimeSpan.FromMilliseconds(2000));
-                da.RepeatBehavior = RepeatBehavior.Forever;
-                RotateTransform myRotateTransform = new RotateTransform();
-                myRotateTransform.CenterX = myRectangleGeometry.Rect.Width / 2;
-                myRotateTransform.CenterY = myRectangleGeometry.Rect.Height / 2;
-
-                Storyboard.SetTargetName(da, spriteName);
-                Storyboard.SetTargetProperty(
-                    da, new PropertyPath(RectangleGeometry.TransformProperty));
-                // Create a storyboard to apply the animation.
-                Storyboard ellipseStoryboard = new Storyboard();
-
-                ellipseStoryboard.Children.Add(myRectAnimation);
 
                 // Start the storyboard when the Path loads.
-                myPath.Loaded += delegate (object sender, RoutedEventArgs e)
-                {
-                    ellipseStoryboard.Begin(this);
-                };
 
-               
-                containerCanvas.Children.Add(myPath);
+
+
+                containerCanvas.Children.Add(p);
 
                 Content = containerCanvas;
 
             }
         }
-        public void RectAnimationExample()
+
+        private void RenderSnowflakes(int i, int FrameWidth, int FrameHeight, List<string> sprites)
         {
-
-            // Create a NameScope for this page so that
-            // Storyboards can be used.
-            NameScope.SetNameScope(this, new NameScope());
-
             RectangleGeometry myRectangleGeometry = new RectangleGeometry();
-            myRectangleGeometry.Rect = new Rect(0, 0, 95, 95);
 
+            var randomStartY = Randomer.Next(0, (int)this.MainGrid.ActualWidth - FrameWidth);
+            int randomStartX = -Randomer.Next(FrameHeight, FrameHeight * 4);
+            var randomDuration = Randomer.Next(1000, 4000);
+            myRectangleGeometry.Rect = new Rect(randomStartY, randomStartX, FrameWidth, FrameHeight);
+            string spriteName = "Snowflake" + i.ToString("0000");
+            sprites.Add(spriteName);
             // Assign the geometry a name so that
             // it can be targeted by a Storyboard.
             this.RegisterName(
-                "MyAnimatedRectangleGeometry", myRectangleGeometry);
+                spriteName, myRectangleGeometry);
 
             Path myPath = new Path();
             myPath.Fill = System.Windows.Media.Brushes.AliceBlue;
             var fullBitmap = new BitmapImage(new Uri(@"pack://application:,,,/Resources/SnowSprite.png"));
-            Int32Rect croppRect = new Int32Rect(0, 0, 95, 95);
+            Int32Rect croppRect = new Int32Rect(0, 0, FrameWidth, FrameHeight);
             var croppedBitmap = new CroppedBitmap(fullBitmap, croppRect);
 
             var mybrush = new ImageBrush(croppedBitmap);
@@ -290,18 +261,19 @@ namespace MyScreensaver_wpf
             myPath.Data = myRectangleGeometry;
 
             RectAnimation myRectAnimation = new RectAnimation();
-            myRectAnimation.Duration = TimeSpan.FromSeconds(2);
+            myRectAnimation.BeginTime = TimeSpan.FromSeconds(Randomer.NextDouble());
+            myRectAnimation.Duration = TimeSpan.FromMilliseconds(randomDuration);
             myRectAnimation.FillBehavior = FillBehavior.HoldEnd;
             // Set the animation to repeat forever. 
             myRectAnimation.RepeatBehavior = RepeatBehavior.Forever;
 
             // Set the From and To properties of the animation.
-            myRectAnimation.From = new Rect(0,0, 95, 95);
-            myRectAnimation.To = new Rect(0, this.MainGrid.ActualHeight, 95, 95);
+            myRectAnimation.From = new Rect(randomStartY, randomStartX, FrameWidth, FrameHeight);
+            myRectAnimation.To = new Rect(randomStartY, this.MainGrid.ActualHeight, FrameWidth, FrameHeight);
 
             // Set the animation to target the Rect property
             // of the object named "MyAnimatedRectangleGeometry."
-            Storyboard.SetTargetName(myRectAnimation, "MyAnimatedRectangleGeometry");
+            Storyboard.SetTargetName(myRectAnimation, spriteName);
             Storyboard.SetTargetProperty(
                 myRectAnimation, new PropertyPath(RectangleGeometry.RectProperty));
 
@@ -312,14 +284,15 @@ namespace MyScreensaver_wpf
             da.Duration = new Duration(TimeSpan.FromMilliseconds(2000));
             da.RepeatBehavior = RepeatBehavior.Forever;
             RotateTransform myRotateTransform = new RotateTransform();
-            myRotateTransform.CenterX = Snowflake01.Width / 2;
-            myRotateTransform.CenterY = Snowflake01.Height / 2;
+            myRotateTransform.CenterX = myRectangleGeometry.Rect.Width / 2;
+            myRotateTransform.CenterY = myRectangleGeometry.Rect.Height / 2;
 
-            Storyboard.SetTargetName(da, "MyAnimatedRectangleGeometry");
+            Storyboard.SetTargetName(da, spriteName);
             Storyboard.SetTargetProperty(
                 da, new PropertyPath(RectangleGeometry.TransformProperty));
             // Create a storyboard to apply the animation.
             Storyboard ellipseStoryboard = new Storyboard();
+
             ellipseStoryboard.Children.Add(myRectAnimation);
 
             // Start the storyboard when the Path loads.
@@ -328,10 +301,60 @@ namespace MyScreensaver_wpf
                 ellipseStoryboard.Begin(this);
             };
 
-            Canvas containerCanvas = new Canvas();
+
             containerCanvas.Children.Add(myPath);
 
             Content = containerCanvas;
         }
+
+        public void HalloweenCrawlies()
+        {
+            int FrameWidth = 250;
+            int FrameHeight = 245;
+            // Create a NameScope for this page so that
+            // Storyboards can be used.
+            NameScope.SetNameScope(this, new NameScope());
+            Canvas containerCanvas = new Canvas();
+            List<string> sprites = new List<string>();
+            for (int i = 1; i <= 2; i++)
+            {
+         
+                string spriteName = "Spider" + i.ToString("0000");
+                AnimatingSprites.Add(spriteName);
+
+                RectangleGeometry myRectangleGeometry = new RectangleGeometry();
+
+                var randomStartY = Randomer.Next(0, FrameWidth);
+                int randomStartX = -Randomer.Next(FrameHeight, FrameHeight * 4);
+                
+                myRectangleGeometry.Rect = new Rect(randomStartY, randomStartX, FrameWidth, FrameHeight);
+                // Assign the geometry a name so that
+                // it can be targeted by a Storyboard.
+                this.RegisterName(
+                    spriteName, myRectangleGeometry);
+
+                Sprite sprite = new SpiderSprite(FrameWidth, FrameHeight,1000,4000,"png",randomStartY,randomStartX);
+                var p = sprite.doThing(myRectangleGeometry, this.MainGrid, spriteName,this);
+                sprite.AnimationComplete += HalloweenSpiderRectAnimation_Completed;
+
+
+                // Start the storyboard when the Path loads.
+
+
+
+                containerCanvas.Children.Add(p);
+
+                Content = containerCanvas;
+
+            }
+        }
+
+        private void HalloweenSpiderRectAnimation_Completed(object sender, EventArgs e)
+        {
+            int x = 0;
+            int y = x;
+        }
+
     }
+
 }

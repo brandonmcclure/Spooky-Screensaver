@@ -124,6 +124,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="iSprite.cs" />
+    <Compile Include="Modes\Haloween\HaloweenCrawlies.cs" />
+    <Compile Include="Modes\Winter\SnowSprite.cs" />
+    <Compile Include="SprintAnimationEventArgs.cs" />
+    <Compile Include="Sprite.cs" />
     <Page Include="Blackout.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -177,8 +182,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Modes\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
