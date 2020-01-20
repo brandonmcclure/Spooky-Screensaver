@@ -21,7 +21,7 @@ variables:
   BuildPlatform: any cpu
   BuildConfiguration: release
 stages:
-- stage: BuildPrep
+- stage: Build
   jobs:
   - job: SonarCloud
     steps:
@@ -42,10 +42,6 @@ stages:
       displayName: 'NuGet restore'
       inputs:
         restoreSolution: '**\*.sln'
-- stage: Build
-  dependsOn:
-  - BuildPrep
-  jobs:
   - job: VSBuild
     steps:
     - task: VSBuild@1
