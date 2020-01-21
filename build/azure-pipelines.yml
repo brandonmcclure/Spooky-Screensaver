@@ -49,7 +49,7 @@ stages:
         configuration: '$(BuildConfiguration)'
     - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
       displayName: 'Run Code Analysis'
-      condition: eq('${{ parameters.RunCodeAnalysis }}', true)
+      condition: eq('${{ variables.RunCodeAnalysis }}', true)
     - task: CopyFiles@2
       displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
       inputs:
@@ -111,3 +111,21 @@ stages:
         platform: '$(BuildPlatform)'
         configuration: '$(BuildConfiguration)'
         diagnosticsEnabled: True
+- stage: GitHubPublish
+  dependsOn: Test
+  jobs:
+  - job: publish
+    steps: 
+    - task: GitHubRelease@1
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+      inputs:
+        gitHubConnection: 'SpookyScreenSaver'
+        repositoryName: '$(Build.Repository.Name)'
+        action: 'create'
+        target: '$(Build.SourceVersion)'
+        tagSource: 'gitTag'
+        releaseNotesSource: 'inline'
+        releaseNotesInline: 'Test'
+        isDraft: true
+        changeLogCompareToRelease: 'lastFullRelease'
+        changeLogType: 'commitBased'
