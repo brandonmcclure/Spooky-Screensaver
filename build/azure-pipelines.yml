@@ -73,18 +73,13 @@ stages:
            return 0
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(Pipeline.Workspace)**/*.scr'
+        targetPath: '**/*.scr'
         artifact: 'Distributable'
         publishLocation: 'pipeline'    
-    - task: CopyFiles@2
-      displayName: 'Copy release script to artifact staging directory'
-      inputs:
-        SourceFolder: build
-        TargetFolder: '$(build.artifactstagingdirectory)\build'
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(Pipeline.Workspace)**/*.scr'
-        artifact: 'Distributable'
+        targetPath: 'build'
+        artifact: 'build'
         publishLocation: 'pipeline'  
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact: drop'
