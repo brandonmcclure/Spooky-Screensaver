@@ -102,6 +102,7 @@ stages:
   jobs:
   - job: UnitTest
     steps: 
+    - checkout: self
     - task: VSTest@2
       displayName: 'VsTest - testAssemblies'
       inputs:
@@ -111,6 +112,10 @@ stages:
         platform: '$(BuildPlatform)'
         configuration: '$(BuildConfiguration)'
         diagnosticsEnabled: True
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/TEST-*.xml'
 - stage: GitHubPublish
   dependsOn: Test
   jobs:
