@@ -48,8 +48,8 @@ stages:
         configuration: '$(BuildConfiguration)'
     - task: PublishPipelineArtifact@1
       inputs:
-       targetPath: '**\bin\$(BuildConfiguration)\**'
-       artifact: '$(BuildConfiguration'
+       targetPath: '**\bin\**'
+       artifact: '$(BuildConfiguration)'
        publishLocation: 'pipeline'
     - powershell: |   
        Write-Host " We are: at $(Get-Location)"
