@@ -27,6 +27,7 @@ stages:
     steps:
     - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
       displayName: 'Prepare analysis on SonarCloud'
+      condition: eq('$(( parameters.RunCodeAnalysis }}', true))
       inputs:
         SonarCloud: 'sq cloud'
         organization: 'brandonmcclure-github'
@@ -46,6 +47,9 @@ stages:
         solution: '**\*.sln'
         platform: '$(BuildPlatform)'
         configuration: '$(BuildConfiguration)'
+    - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
+      displayName: 'Run Code Analysis'
+      condition: eq('$(( parameters.RunCodeAnalysis }}', true))
     - task: CopyFiles@2
       displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
       inputs:
@@ -86,8 +90,6 @@ stages:
       displayName: 'Publish Artifact: drop'
       inputs:
         PathtoPublish: '$(build.artifactstagingdirectory)'
-    - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
-      displayName: 'Run Code Analysis'
     - task: PublishSymbols@2
       displayName: 'Publish symbols path'
       inputs:
