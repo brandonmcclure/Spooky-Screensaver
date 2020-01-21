@@ -89,7 +89,7 @@ stages:
            return 0
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$env:BUILD_ARTIFACTSTAGINGDIRECTORY\distributable\$($env:BuildConfiguration)'
+        targetPath: '$(build.artifactstagingdirectory)\distributable\$($env:BuildConfiguration)'
         artifact: 'Distributable'
         publishLocation: 'pipeline' 
       enabled: true   
