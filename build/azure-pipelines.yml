@@ -98,11 +98,6 @@ stages:
       displayName: 'Publish Artifact: drop'
       inputs:
         PathtoPublish: '$(build.artifactstagingdirectory)'
-    - task: PublishSymbols@2
-      displayName: 'Publish symbols path'
-      inputs:
-        SearchPattern: '**\bin\**\*.pdb'
-        PublishSymbols: false
     - task: GitHubRelease@1
       condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
       inputs:
