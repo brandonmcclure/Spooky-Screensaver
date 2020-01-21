@@ -92,7 +92,7 @@ stages:
         targetPath: '$(build.artifactstagingdirectory)\distributable\$($env:BuildConfiguration)'
         artifact: 'Distributable'
         publishLocation: 'pipeline' 
-      enabled: true   
+      enabled: false   
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: 'build'
