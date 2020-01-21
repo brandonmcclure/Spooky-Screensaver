@@ -52,21 +52,21 @@ stages:
         SourceFolder: '$(system.defaultworkingdirectory)'
         Contents: '**\bin\$(BuildConfiguration)\**'
         TargetFolder: '$(build.artifactstagingdirectory)'
-    - powershell:
-      name: convertEXEtoScr
-      script: |   
-       Write-Host " We are: at $(Get-Location)"
-       Write-Host "env:SYSTEM_ARTIFACTSDIRECTORY = $env:SYSTEM_ARTIFACTSDIRECTORY"
-       
-       if ($(system.debug)){
-        Write-Host "env:AGENT_RELEASEDIRECTORY = $env:AGENT_RELEASEDIRECTORY"
-        ls "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\$($env:BuildConfiguration)\"
-       }
-       copy-item "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\$($env:BuildConfiguration)\MyScreensaver_wpf.exe" "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\$($env:BuildConfiguration)\MyScreensaver_wpf.scr"
-       
-       return 0
-       # Use the environment variables input below to pass secret variables to this script.
+    - task: PowerShell@2
       displayName: 'copy exe into .scr file'
+      inputs:
+        targetType: 'inline'
+        script: |
+           Write-Host " We are: at $(Get-Location)"
+           Write-Host "env:SYSTEM_ARTIFACTSDIRECTORY = $env:SYSTEM_ARTIFACTSDIRECTORY"
+           
+           if ($(system.debug)){
+            Write-Host "env:AGENT_RELEASEDIRECTORY = $env:AGENT_RELEASEDIRECTORY"
+            ls "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\$($env:BuildConfiguration)\"
+           }
+           copy-item "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\$($env:BuildConfiguration)\MyScreensaver_wpf.exe" "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\$($env:BuildConfiguration)\MyScreensaver_wpf.scr"
+           
+           return 0
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: '$(Pipeline.Workspace)**/*.scr'
