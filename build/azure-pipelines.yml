@@ -81,6 +81,9 @@ stages:
             Write-Host "env:AGENT_RELEASEDIRECTORY = $env:AGENT_RELEASEDIRECTORY"
             ls "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\$($env:BuildConfiguration)\"
            }
+           If (-not (Test-Path "$env:BUILD_ARTIFACTSTAGINGDIRECTORY\distributable\$($env:BuildConfiguration)")){
+             New-Item "$env:BUILD_ARTIFACTSTAGINGDIRECTORY\distributable\$($env:BuildConfiguration)" -ItemType Directory
+           }
            copy-item "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\$($env:BuildConfiguration)\MyScreensaver_wpf.exe" "$env:BUILD_ARTIFACTSTAGINGDIRECTORY\distributable\$($env:BuildConfiguration)\MyScreensaver_wpf.scr"
            
            return 0
@@ -104,20 +107,6 @@ stages:
       inputs:
         SearchPattern: '**\bin\**\*.pdb'
         PublishSymbols: false
-      continueOnError: true
-- stage: Test
-  dependsOn:
-  - Build
-  jobs:
-  - job: UnitTest
-    steps: 
-    - checkout: self
-    
-- stage: GitHubPublish
-  dependsOn: Test
-  jobs:
-  - job: publish
-    steps: 
     - task: GitHubRelease@1
       condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
       inputs:
