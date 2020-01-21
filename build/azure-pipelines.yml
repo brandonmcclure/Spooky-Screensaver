@@ -50,6 +50,19 @@ stages:
     - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
       displayName: 'Run Code Analysis'
       condition: eq(variables['RunCodeAnalysis'], true)
+    - task: VSTest@2
+      displayName: 'VsTest - testAssemblies'
+      inputs:
+        testAssemblyVer2: |
+         **\$(BuildConfiguration)\*test*.dll
+         !**\obj\**
+        platform: '$(BuildPlatform)'
+        configuration: '$(BuildConfiguration)'
+        diagnosticsEnabled: True
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/TEST-*.xml'
     - task: CopyFiles@2
       displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
       inputs:
@@ -68,15 +81,15 @@ stages:
             Write-Host "env:AGENT_RELEASEDIRECTORY = $env:AGENT_RELEASEDIRECTORY"
             ls "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\$($env:BuildConfiguration)\"
            }
-           copy-item "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\$($env:BuildConfiguration)\MyScreensaver_wpf.exe" "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\$($env:BuildConfiguration)\MyScreensaver_wpf.scr"
+           copy-item "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\$($env:BuildConfiguration)\MyScreensaver_wpf.exe" "$env:BUILD_ARTIFACTSTAGINGDIRECTORY\distributable\$($env:BuildConfiguration)\MyScreensaver_wpf.scr"
            
            return 0
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '**/*.scr'
+        targetPath: '$env:BUILD_ARTIFACTSTAGINGDIRECTORY\distributable\$($env:BuildConfiguration)'
         artifact: 'Distributable'
         publishLocation: 'pipeline' 
-      enabled: false   
+      enabled: true   
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: 'build'
@@ -99,19 +112,7 @@ stages:
   - job: UnitTest
     steps: 
     - checkout: self
-    - task: VSTest@2
-      displayName: 'VsTest - testAssemblies'
-      inputs:
-        testAssemblyVer2: |
-         **\$(BuildConfiguration)\*test*.dll
-         !**\obj\**
-        platform: '$(BuildPlatform)'
-        configuration: '$(BuildConfiguration)'
-        diagnosticsEnabled: True
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: 'JUnit'
-        testResultsFiles: '**/TEST-*.xml'
+    
 - stage: GitHubPublish
   dependsOn: Test
   jobs:
