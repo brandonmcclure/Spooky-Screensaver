@@ -52,31 +52,36 @@ stages:
         SourceFolder: '$(system.defaultworkingdirectory)'
         Contents: '**\bin\$(BuildConfiguration)\**'
         TargetFolder: '$(build.artifactstagingdirectory)'
-    - powershell: |   
+    - powershell:
+      name: convertEXEtoScr
+      script: |   
        Write-Host " We are: at $(Get-Location)"
        Write-Host "env:SYSTEM_ARTIFACTSDIRECTORY = $env:SYSTEM_ARTIFACTSDIRECTORY"
        
        if ($(system.debug)){
         Write-Host "env:AGENT_RELEASEDIRECTORY = $env:AGENT_RELEASEDIRECTORY"
-        ls "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\Release\"
+        ls "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\$($env:BuildConfiguration)\"
        }
-       copy-item "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\Release\MyScreensaver_wpf.exe" "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\Release\MyScreensaver_wpf.scr"
+       copy-item "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\$($env:BuildConfiguration)\MyScreensaver_wpf.exe" "$env:SYSTEM_ARTIFACTSDIRECTORY\MyScreensaver_wpf\bin\$($env:BuildConfiguration)\MyScreensaver_wpf.scr"
        
        return 0
        # Use the environment variables input below to pass secret variables to this script.
       displayName: 'copy exe into .scr file'
-    
-    - task: ArchiveFiles@2
-      displayName: 'Archive $(Build.artifactstagingdirectory)'
+    - task: PublishPipelineArtifact@1
       inputs:
-        rootFolderOrFile: '$(Build.artifactstagingdirectory)'
-    
+        targetPath: '$(Pipeline.Workspace)**/*.scr'
+        artifact: 'Distributable'
+        publishLocation: 'pipeline'    
     - task: CopyFiles@2
       displayName: 'Copy release script to artifact staging directory'
       inputs:
         SourceFolder: build
         TargetFolder: '$(build.artifactstagingdirectory)\build'
-    
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Pipeline.Workspace)**/*.scr'
+        artifact: 'Distributable'
+        publishLocation: 'pipeline'  
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact: drop'
       inputs:
