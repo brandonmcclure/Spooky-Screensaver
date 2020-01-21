@@ -20,7 +20,7 @@ namespace MyScreensaver_wpf
         public int _FrameHeight { get; private set; }
         public int _randomDurationStart { get; private set; }
         public int _randomDurationEnd { get; private set; }
-        public string SpriteSheetName { get; private set; }
+        public string _SpriteSheetName { get; private set; }
         public int _randomStartY { get; private set; }
         public int _randomStartX { get; private set; }
 
@@ -30,89 +30,13 @@ namespace MyScreensaver_wpf
             _FrameHeight = frameHeight;
             _randomDurationEnd = randomDurationEnd;
             _randomDurationStart = randomDurationStart;
-            spriteSheetName = spriteSheetName ?? throw new ArgumentNullException(nameof(spriteSheetName));
+            _SpriteSheetName = spriteSheetName ?? throw new ArgumentNullException(nameof(spriteSheetName));
             _randomStartY = randomStartY;
             _randomStartX = randomStartX;
 
         }
 
-        public System.Windows.Shapes.Path DoThing(RectangleGeometry RectangleGeometry, Grid grid, string spriteName, FrameworkElement frameworkElement)
-        {
-
-            var randomDuration = RandomNumber(1000, 4000);
-            // Assign the geometry a name so that
-            // it can be targeted by a Storyboard.
-            frameworkElement.RegisterName(
-                spriteName, RectangleGeometry);
-
-            System.Windows.Shapes.Path myPath = new System.Windows.Shapes.Path
-            {
-                Fill = System.Windows.Media.Brushes.AliceBlue
-            };
-            var fullBitmap = new BitmapImage(new Uri(@"pack://application:,,,/Resources/SnowSprite.png"));
-            Int32Rect croppRect = new Int32Rect(0, 0, _FrameWidth, _FrameHeight);
-            var croppedBitmap = new CroppedBitmap(fullBitmap, croppRect);
-
-            var mybrush = new ImageBrush(croppedBitmap)
-            {
-                Transform = new TranslateTransform(0, 0),
-                AlignmentX = AlignmentX.Left,
-                AlignmentY = AlignmentY.Top,
-                Stretch = Stretch.Fill
-            };
-            myPath.Fill = mybrush;
-            myPath.StrokeThickness = 1;
-            myPath.Stroke = System.Windows.Media.Brushes.Black;
-            myPath.Data = RectangleGeometry;
-
-            RectAnimation myRectAnimation = new RectAnimation
-            {
-                BeginTime = TimeSpan.FromSeconds(RandomNumber()),
-                Duration = TimeSpan.FromMilliseconds(randomDuration),
-                FillBehavior = FillBehavior.HoldEnd,
-                // Set the animation to repeat forever. 
-                RepeatBehavior = RepeatBehavior.Forever,
-
-                // Set the From and To properties of the animation.
-                From = new Rect(_randomStartY, _randomStartX, _FrameWidth, _FrameHeight),
-                To = new Rect(_randomStartY, frameworkElement.ActualHeight, _FrameWidth, _FrameHeight)
-            };
-
-            // Set the animation to target the Rect property
-            // of the object named "MyAnimatedRectangleGeometry."
-            Storyboard.SetTargetName(myRectAnimation, spriteName);
-            Storyboard.SetTargetProperty(
-                myRectAnimation, new PropertyPath(RectangleGeometry.RectProperty));
-
-            //Control Rotation speed
-            DoubleAnimation da = new DoubleAnimation
-            {
-                From = 0,
-                To = 360,
-                Duration = new Duration(TimeSpan.FromMilliseconds(2000)),
-                RepeatBehavior = RepeatBehavior.Forever
-            };
-            RotateTransform myRotateTransform = new RotateTransform
-            {
-                CenterX = RectangleGeometry.Rect.Width / 2,
-                CenterY = RectangleGeometry.Rect.Height / 2
-            };
-
-            Storyboard.SetTargetName(da, spriteName);
-            Storyboard.SetTargetProperty(
-                da, new PropertyPath(RectangleGeometry.TransformProperty));
-
-            Storyboard ellipseStoryboard = new Storyboard();
-
-            ellipseStoryboard.Children.Add(myRectAnimation);
-
-            myPath.Loaded += delegate (object sender, RoutedEventArgs e)
-            {
-                ellipseStoryboard.Begin(frameworkElement);
-            };
-
-            return myPath;
-        }
+        public abstract System.Windows.Shapes.Path DoThing(RectangleGeometry RectangleGeometry, Grid grid, string spriteName, FrameworkElement frameworkElement);
 
         private void BeginStoryBoard(object sender, EventArgs e)
         {

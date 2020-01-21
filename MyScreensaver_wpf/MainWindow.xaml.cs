@@ -218,7 +218,7 @@ namespace MyScreensaver_wpf
                 this.RegisterName(
                     spriteName, myRectangleGeometry);
 
-                Sprite sprite = new SnowSprite(FrameWidth,FrameHeight, 1000,4000, "SnowSprite.png",randomStartY,randomStartX);
+                SnowSprite sprite = new SnowSprite(FrameWidth,FrameHeight, 1000,4000, "SnowSprite.png",randomStartY,randomStartX);
                 var p = sprite.DoThing(myRectangleGeometry, this.MainGrid, spriteName, this);
                 sprite.AnimationComplete += HalloweenSpiderRectAnimation_Completed;
 

@@ -18,18 +18,16 @@ namespace MyScreensaver_wpf.Modes.Winter
         {
         }
 
-        public new System.Windows.Shapes.Path DoThing(RectangleGeometry RectangleGeometry, Grid grid, string spriteName, FrameworkElement frameworkElement)
+        public override System.Windows.Shapes.Path DoThing(RectangleGeometry RectangleGeometry, Grid grid, string spriteName, FrameworkElement frameworkElement)
         {
 
             System.Windows.Shapes.Path myPath = new System.Windows.Shapes.Path
             {
                 Fill = System.Windows.Media.Brushes.LightGray
             };
-            var fullBitmap = new BitmapImage(new Uri(@"pack://application:,,,/Resources/" + SpriteSheetName));
+            BitmapImage fullBitmap = new BitmapImage(new Uri(@"pack://application:,,,/Resources/" + _SpriteSheetName));
             Int32Rect croppRect = new Int32Rect(0, 0, _FrameWidth, _FrameHeight);
-            var croppedBitmap = new CroppedBitmap(fullBitmap, croppRect);
-
-            JpegBitmapEncoder encoder = new JpegBitmapEncoder(); Guid photoID = System.Guid.NewGuid(); String photolocation = photoID.ToString() + ".jpg"; encoder.Frames.Add(BitmapFrame.Create(fullBitmap)); using (var filestream = new FileStream(photolocation, FileMode.Create)) { encoder.Save(filestream); }
+            CroppedBitmap croppedBitmap = new CroppedBitmap(fullBitmap, croppRect);
 
             ImageBrush mybrush = new ImageBrush(croppedBitmap)
             {
@@ -75,9 +73,25 @@ namespace MyScreensaver_wpf.Modes.Winter
             return myPath;
         }
 
+        public BitmapImage LoadSpritesheet()
+        {
+            var fullBitmap = new BitmapImage(new Uri(@"pack://application:,,,/Resources/" + _SpriteSheetName));
+            return fullBitmap;
+        }
+
+        public CroppedBitmap GetFrame(BitmapImage fullBitmap)
+        {
+            if (_FrameWidth < 1)
+                throw new ArgumentOutOfRangeException("_FrameWidth", "FrameWidth has not been set properly");
+            if (_FrameHeight < 1)
+                throw new ArgumentOutOfRangeException("_FrameHeight", "FrameHeight has not been set properly");
+            Int32Rect croppRect = new Int32Rect(0, 0, _FrameWidth, _FrameHeight);
+            var croppedBitmap = new CroppedBitmap(fullBitmap, croppRect);
+            return croppedBitmap;
+        }
+
         private void RectAnimation_Completed(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
         }
     }
 }
