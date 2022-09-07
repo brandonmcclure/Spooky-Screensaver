@@ -30,8 +30,8 @@ jobs:
           msbuild.exe SpiderScreensaver.sln /p:platform="Any CPU" /p:configuration="Release"
       - name: Artifact prep 
         run: | 
-          cp MyScreensaver_wpf/bin/MyScreensaver_wpf.exe MyScreensaver_wpf/bin/MyScreensaver_wpf.src
-          cp MyScreensaver_wpf/bin/MyScreensaver_wpf.src bin
+          cp MyScreensaver_wpf/bin/release/MyScreensaver_wpf.exe MyScreensaver_wpf/bin/release/MyScreensaver_wpf.src
+          cp MyScreensaver_wpf/bin/release/MyScreensaver_wpf.src bin
       - name: Publish bin artifacts
         uses: actions/upload-artifact@v3
         with:
