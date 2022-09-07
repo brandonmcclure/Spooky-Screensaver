@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 namespace MyScreensaver_wpf
 {
     public abstract class Sprite : ISprite
-    {        
+    {
         public int _FrameWidth { get; private set; }
         public int _FrameHeight { get; private set; }
         public int _randomDurationStart { get; private set; }

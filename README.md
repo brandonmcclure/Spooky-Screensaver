@@ -4,7 +4,7 @@
 
 # Spooky-Screensaver
 
-I wanted a screensaver for Halloween that will display spiders and other creepy crawly/spooky things moving around my screen. So far, I have a screen saver that will display a adorable little spider as it rather robotically meanders across my screen. I mess around from time to time to add other features, and maybe one day my desktop will have a scary torantuala crawling around it! 
+I wanted a screensaver for Halloween that will display spiders and other creepy crawly/spooky things moving around my screen. So far, I have a screen saver that will display a adorable little spider as it rather robotically meanders across my screen. I mess around from time to time to add other features, and maybe one day my desktop will have a scary torantuala crawling around it!
 
 ### Prerequisites
 
@@ -16,4 +16,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](docs/LICEN
 
 ## Acknowledgments
 
-I used Frank McCown's tutorial and code from https://www.harding.edu/fmccown/screensaver/screensaver.html to get myself started in the right direction.
+I used Frank McCown's tutorial and code from <https://www.harding.edu/fmccown/screensaver/screensaver.html> to get myself started in the right direction.
