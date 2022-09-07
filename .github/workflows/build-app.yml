@@ -31,7 +31,7 @@ jobs:
       - name: Artifact prep 
         run: | 
           cp MyScreensaver_wpf/bin/release/MyScreensaver_wpf.exe MyScreensaver_wpf/bin/release/MyScreensaver_wpf.src
-          cp MyScreensaver_wpf/bin/release/MyScreensaver_wpf.src bin
+          cp MyScreensaver_wpf/bin/release/MyScreensaver_wpf.src bin/MyScreensaver_wpf.src
       - name: Publish bin artifacts
         uses: actions/upload-artifact@v3
         with:
