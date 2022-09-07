@@ -42,15 +42,6 @@ jobs:
           name: bin
           path: |
             bin
-  release:
-    name: ReleaseApp
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: my-artifact
-          
       - name: Create Draft Release
       id: create_release
         uses: actions/create-release@v1
@@ -66,7 +57,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./my-artifact.zip
+          asset_path: bin
           asset_name: my-artifact.zip
           asset_content_type: application/zip
 
