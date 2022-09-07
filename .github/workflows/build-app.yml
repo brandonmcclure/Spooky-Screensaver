@@ -33,5 +33,5 @@ jobs:
 
       - name: Artifact prep 
         run: | 
-          cp MyScreensaver_wpf/bin/MyScreensaver_wpf.exe MyScreensaver_wpf/bin/MyScreensaver_wpf.src
-          cp -r MyScreensaver_wpf/bin/MyScreensaver_wpf.src
+          ls MyScreensaver_wpf/bin
+          
