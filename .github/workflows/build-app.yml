@@ -45,6 +45,7 @@ jobs:
   release:
     name: ReleaseApp
     runs-on: ubuntu-latest
+    depends-on: build
     steps:
       - uses: actions/download-artifact@v3
         with:
