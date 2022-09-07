@@ -10,7 +10,6 @@ jobs:
     name: BuildApp
     runs-on: windows-latest
     steps:
-      # Git Checkout
       - name: Checkout Code
         uses: actions/checkout@v3
         with:
