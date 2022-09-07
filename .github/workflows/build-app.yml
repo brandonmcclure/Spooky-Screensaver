@@ -34,7 +34,7 @@ jobs:
 
       - name: Artifact prep 
         run: | 
-          sudo cp -r MyScreensaver_wpf/bin 
+          cp -r MyScreensaver_wpf/bin 
       - name: Publish bin artifacts
         uses: actions/upload-artifact@v3
         with:
