@@ -29,7 +29,7 @@ namespace MyScreensaver_wpf
         IConfiguration _configuration;
         private const int NumberOfColumns = 1;
         private const int NumberOfFrames = 1;
-        
+
         public static readonly TimeSpan TimePerFrame = TimeSpan.FromSeconds(1 / 60f);
         private int currentFrame;
         private TimeSpan timeTillNextFrame;
@@ -42,11 +42,11 @@ namespace MyScreensaver_wpf
 
         public MainWindow()
         {
-            
+
             InitializeComponent();
             this.Loaded += MainWindow_Loaded;
         }
-        public MainWindow(IConfiguration configuration) : this ()
+        public MainWindow(IConfiguration configuration) : this()
         {
             _configuration = configuration;
         }
@@ -67,7 +67,7 @@ namespace MyScreensaver_wpf
                 throw new IncorrectConfigurationException("Could not get the window bounds");
             }
 
-           
+
             DebugText.Visibility = System.Windows.Visibility.Hidden;
             if (_configuration["Debug"] == "1")
             {
@@ -94,7 +94,7 @@ namespace MyScreensaver_wpf
                     Trace.TraceError("Could not read the maxNumberOfSprites from the Configuration file, defaulting to 1");
                     maxSprites = 1;
                 }
-                
+
                 SnowFallingAnimation(RandomNumber(minSprites, maxSprites));
             }
 
@@ -141,12 +141,12 @@ namespace MyScreensaver_wpf
 
             Snowflake01.RenderTransform = transformGroup;
             myRotateTransform.BeginAnimation(RotateTransform.AngleProperty, da);
-            
+
         }
 
         private void OnUpdate(object sender, object e)
         {
-            
+
             this.timeTillNextFrame += TimeSpan.FromSeconds(1 / 60f);
             if (this.timeTillNextFrame > TimePerFrame)
             {
@@ -164,7 +164,7 @@ namespace MyScreensaver_wpf
                     HalloweenCrawlies();
                 }
             }
-            
+
         }
         private Int32 CalculateColumn()
         {
@@ -201,7 +201,7 @@ namespace MyScreensaver_wpf
             NameScope.SetNameScope(this, new NameScope());
             Canvas containerCanvas = new Canvas();
             List<string> sprites = new List<string>();
-            for(int i = 1; i <= numberOfSnowflakes; i++)
+            for (int i = 1; i <= numberOfSnowflakes; i++)
             {
                 string spriteName = "SnowSprite" + i.ToString("0000");
                 AnimatingSprites.Add(spriteName);
@@ -218,7 +218,7 @@ namespace MyScreensaver_wpf
                 this.RegisterName(
                     spriteName, myRectangleGeometry);
 
-                Sprite sprite = new SnowSprite(FrameWidth,FrameHeight, 1000,4000, "SnowSprite.png",randomStartY,randomStartX);
+                Sprite sprite = new SnowSprite(FrameWidth, FrameHeight, 1000, 4000, "SnowSprite.png", randomStartY, randomStartX);
                 var p = sprite.DoThing(myRectangleGeometry, this.MainGrid, spriteName, this);
                 sprite.AnimationComplete += HalloweenSpiderRectAnimation_Completed;
 
@@ -245,7 +245,7 @@ namespace MyScreensaver_wpf
             List<string> sprites = new List<string>();
             for (int i = 1; i <= 2; i++)
             {
-         
+
                 string spriteName = "Spider" + i.ToString("0000");
                 AnimatingSprites.Add(spriteName);
 
@@ -253,15 +253,15 @@ namespace MyScreensaver_wpf
 
                 var randomStartY = RandomNumber(0, FrameWidth);
                 int randomStartX = -RandomNumber(FrameHeight, FrameHeight * 4);
-                
+
                 myRectangleGeometry.Rect = new Rect(randomStartY, randomStartX, FrameWidth, FrameHeight);
                 // Assign the geometry a name so that
                 // it can be targeted by a Storyboard.
                 this.RegisterName(
                     spriteName, myRectangleGeometry);
 
-                Sprite sprite = new SpiderSprite(FrameWidth, FrameHeight,1000,4000,"png",randomStartY,randomStartX);
-                var p = sprite.DoThing(myRectangleGeometry, this.MainGrid, spriteName,this);
+                Sprite sprite = new SpiderSprite(FrameWidth, FrameHeight, 1000, 4000, "png", randomStartY, randomStartX);
+                var p = sprite.DoThing(myRectangleGeometry, this.MainGrid, spriteName, this);
                 sprite.AnimationComplete += HalloweenSpiderRectAnimation_Completed;
 
 

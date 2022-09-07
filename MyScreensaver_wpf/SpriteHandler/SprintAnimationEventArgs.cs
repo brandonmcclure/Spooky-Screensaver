@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace MyScreensaver_wpf
 {
-    class SprintAnimationEventArgs: EventArgs
-        {
-            private readonly string spriteName;
+    class SprintAnimationEventArgs : EventArgs
+    {
+        private readonly string spriteName;
 
-            public SprintAnimationEventArgs(string spriteName)
-            {
-                this.spriteName = spriteName;
-            }
-
-            public string SpriteName
+        public SprintAnimationEventArgs(string spriteName)
         {
-                get { return this.spriteName; }
-            }
+            this.spriteName = spriteName;
+        }
+
+        public string SpriteName
+        {
+            get { return this.spriteName; }
         }
     }
+}

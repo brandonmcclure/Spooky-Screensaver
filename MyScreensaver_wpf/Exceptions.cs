@@ -5,9 +5,9 @@ namespace MyScreensaver_wpf
     [Serializable]
     public class IncorrectConfigurationException : Exception
     {
-        public IncorrectConfigurationException(): this("Invalid Configuration detected")
+        public IncorrectConfigurationException() : this("Invalid Configuration detected")
         {
-            
+
         }
 
         public IncorrectConfigurationException(string message)

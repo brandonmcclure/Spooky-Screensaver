@@ -37,30 +37,30 @@ using System.Windows.Shapes;
 
 namespace MyScreensaver_wpf
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class Blackout : Window
-	{
-		public Blackout()
-		{
-			InitializeComponent();
-			this.Loaded += MainWindow_Loaded;
-		}
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class Blackout : Window
+    {
+        public Blackout()
+        {
+            InitializeComponent();
+            this.Loaded += MainWindow_Loaded;
+        }
 
-		void MainWindow_Loaded(object sender, RoutedEventArgs e)
-		{
-			WindowState = WindowState.Maximized;
-		}
+        void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Maximized;
+        }
 
-		private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-		{
-			Application.Current.Shutdown();
-		}
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
 
-		private void Window_KeyDown(object sender, KeyEventArgs e)
-		{
-			Application.Current.Shutdown();
-		}
-	}
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+    }
 }

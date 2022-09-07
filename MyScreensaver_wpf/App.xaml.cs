@@ -29,26 +29,26 @@ using WaveSim;
 
 namespace MyScreensaver_wpf
 {
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
-	public partial class App : Application
-	{
-		private HwndSource winWPFContent;
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
+    {
+        private HwndSource winWPFContent;
 
-		private void ApplicationStartup(object sender, StartupEventArgs e)
-		{
+        private void ApplicationStartup(object sender, StartupEventArgs e)
+        {
             IConfigurationRoot configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: true)
     .Build();
             if (e.Args.Length == 0 || e.Args[0].ToLower().StartsWith("/s"))
-			{
+            {
 
                 //foreach (Screen s in Screen.AllScreens)
                 //{
-                     Screen s = Screen.PrimaryScreen;
-                    if (s != Screen.PrimaryScreen)
-					{
+                Screen s = Screen.PrimaryScreen;
+                if (s != Screen.PrimaryScreen)
+                {
                     Blackout window = new Blackout
                     {
                         Left = s.WorkingArea.Left,
@@ -57,9 +57,9 @@ namespace MyScreensaver_wpf
                         Height = s.WorkingArea.Height
                     };
                     window.Show();
-					}
-					else
-					{
+                }
+                else
+                {
 
                     MainWindow window = new MainWindow(configuration)
                     {
@@ -69,14 +69,14 @@ namespace MyScreensaver_wpf
                         Height = s.WorkingArea.Height
                     };
                     window.Show();
-					}
-				//}
-			}
-			else if (e.Args[0].ToLower().StartsWith("/p"))
-			{
-				MainWindow window = new MainWindow();
-				Int32 previewHandle = Convert.ToInt32(e.Args[1]);
-				IntPtr pPreviewHnd = new IntPtr(previewHandle);
+                }
+                //}
+            }
+            else if (e.Args[0].ToLower().StartsWith("/p"))
+            {
+                MainWindow window = new MainWindow();
+                Int32 previewHandle = Convert.ToInt32(e.Args[1]);
+                IntPtr pPreviewHnd = new IntPtr(previewHandle);
                 WaveSim.Rect lpRect = new WaveSim.Rect();
 
                 HwndSourceParameters sourceParams = new HwndSourceParameters("sourceParams")
@@ -90,10 +90,10 @@ namespace MyScreensaver_wpf
                 };
 
                 winWPFContent = new HwndSource(sourceParams);
-				winWPFContent.Disposed += (o, args) => window.Close();
-				winWPFContent.RootVisual = window.MainGrid;
+                winWPFContent.Disposed += (o, args) => window.Close();
+                winWPFContent.RootVisual = window.MainGrid;
 
-			}
-		}
-	}
+            }
+        }
+    }
 }
