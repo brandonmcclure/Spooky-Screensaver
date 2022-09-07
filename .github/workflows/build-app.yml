@@ -33,5 +33,5 @@ jobs:
 
       - name: Artifact prep 
         run: | 
-          ls MyScreensaver_wpf/bin
+          ls MyScreensaver_wpf/bin/Release
           
