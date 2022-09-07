@@ -1,0 +1,48 @@
+name: Build App
+
+on:
+  # Trigger mega-linter at Pull Requests to main
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: BuildApp
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1.0.5
+      - name: Setup VSTest
+        uses: darenm/Setup-VSTest@v1
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+      - name: Navigate to Workspace
+        run: cd $GITHUB_WORKSPACE
+      - name: Restore Packages
+        run: nuget restore SpiderScreensaver.sln
+      - name: Build Solution
+        run: |
+          msbuild.exe SpiderScreensaver.sln /p:platform="Any CPU" /p:configuration="Release"
+      - name: Artifact prep 
+        run: | 
+          cp MyScreensaver_wpf/bin/release/MyScreensaver_wpf.exe MyScreensaver_wpf/bin/release/MyScreensaver_wpf.src
+          cp MyScreensaver_wpf/bin/release/MyScreensaver_wpf.src bin/MyScreensaver_wpf.src
+      - name: Publish bin artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: bin
+          path: |
+            bin
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            bin
