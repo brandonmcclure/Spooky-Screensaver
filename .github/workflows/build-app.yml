@@ -23,14 +23,11 @@ jobs:
         uses: microsoft/setup-msbuild@v1.1
       - name: Navigate to Workspace
         run: cd $GITHUB_WORKSPACE
-
       - name: Restore Packages
         run: nuget restore SpiderScreensaver.sln
-
       - name: Build Solution
         run: |
           msbuild.exe SpiderScreensaver.sln /p:platform="Any CPU" /p:configuration="Release"
-
       - name: Artifact prep 
         run: | 
           cp MyScreensaver_wpf/bin/MyScreensaver_wpf.exe MyScreensaver_wpf/bin/MyScreensaver_wpf.src
@@ -42,15 +39,15 @@ jobs:
           path: |
             bin
       - name: Create Draft Release
-      id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: <tofill>
-          release_name: <tofill>
-          draft: true
-          prerelease: false
+        id: create_release
+          uses: actions/create-release@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            tag_name: <tofill>
+            release_name: <tofill>
+            draft: true
+            prerelease: false
       - uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
